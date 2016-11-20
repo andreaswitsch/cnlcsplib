@@ -1,6 +1,6 @@
 # cnlcsplib - Continous Non-Linear Constraint Satisfaction Problem Library
 
-This Library provides a (incomplete) solver for CNLCSP based on the research conducted in the Carpe Noctem Robocup Team.
+This library provides a (incomplete) solver for CNLCSP based on the research conducted in the Carpe Noctem RoboCup Team.
 
 The theoretical background can be found here:
 
@@ -36,4 +36,4 @@ http://nbn-resolving.de/urn:nbn:de:hebis:34-2016110251246
 It is based on the work of:
 http://autodiff.codeplex.com/
 
-Further Documentation follows soon.
+Further documentation follows soon.
