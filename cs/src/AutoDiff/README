@@ -1,0 +1,12 @@
+This is a modified version of AutoDiff by Alex Shtof. The original version can be found at http://autodiff.codeplex.com/, licensed under LGPL.
+The modifications made include:
+- Removal of Contracts to be compatible with mono C# 2.4.4.
+- Addition of a tuple class to be compatible with mono C# 2.4.4.
+- Additions of new Function classes, namely Sin, Cos, LTConstraint, LTEConstraint, Atan2, Max, Min, Or, And, Sigmoid, ConstraintUtility, Abs, Reification.
+- Additions of ToString methods and AggregateConstants to all Functions.
+- Addition of the method void Negate() to terms.
+- Term.Fuzzy.cs, holding logical operators over Terms.
+
+Modifications were done by Hendrik Skubch and Stephan Opfer.
+
+All modifications are licensed under the same license as the original.
