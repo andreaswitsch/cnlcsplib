@@ -33,4 +33,7 @@ http://nbn-resolving.de/urn:nbn:de:hebis:34-2016110251246
   organization={ACM}
 }
 
+It is based on the work of:
+http://autodiff.codeplex.com/
+
 Further Documentation follows soon.
