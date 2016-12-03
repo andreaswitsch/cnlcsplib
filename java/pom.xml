@@ -7,6 +7,9 @@
   <groupId>org.cnlcsplib</groupId>
   <artifactId>cnlcsplib</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+
   <dependencies>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -30,6 +33,9 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <excludes>
+            <exclude>**/Reasoner/IntervalPropagation/*</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
