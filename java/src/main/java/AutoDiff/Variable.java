@@ -35,6 +35,7 @@ public class Variable  extends Term
     */
     public double GlobalMin = Double.NEGATIVE_INFINITY;
     public double GlobalMax = Double.POSITIVE_INFINITY;
+
     static int id = 0;
     int ownID;
     public Variable() throws Exception {

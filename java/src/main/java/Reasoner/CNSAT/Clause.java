@@ -53,7 +53,7 @@ public class Clause implements Comparable<Clause>
             getLiterals().add(l);
         }
          
-        return ;
+        return;
     }
 
     private boolean __IsTautologic;

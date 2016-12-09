@@ -252,7 +252,22 @@ public class Var
         {
             throw new RuntimeException(__dummyCatchVar0);
         }
-    
+    }
+
+    public String toOutputString() {
+        try
+        {
+            return (getAssignment() == getAssignment().False ? "-" : (getAssignment() == getAssignment().True ? "+" :
+                "o")) + this.getTerm().toString();
+        }
+        catch (RuntimeException __dummyCatchVar0)
+        {
+            throw __dummyCatchVar0;
+        }
+        catch (Exception __dummyCatchVar0)
+        {
+            throw new RuntimeException(__dummyCatchVar0);
+        }
     }
 
 }
