@@ -37,6 +37,7 @@ public class Variable  extends Term
     public double GlobalMax = Double.POSITIVE_INFINITY;
 
     static int id = 0;
+    String name="Var";
     int ownID;
     public Variable() throws Exception {
         ownID = id++;
@@ -46,7 +47,7 @@ public class Variable  extends Term
         try
         {
             int hash = ownID;
-            return (hash < 0 ? String.format("Var_%d", -hash) : String.format("Var%d", hash));
+            return (hash < 0 ? String.format("%s_%d",name, -hash) : String.format("%s%d", name, hash));
         }
         catch (RuntimeException __dummyCatchVar0)
         {
@@ -71,6 +72,19 @@ public class Variable  extends Term
             return TermBuilder.Constant(0);
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(final String name)
+    {
+        this.name = name;
+    }
+
+    public static void resetIdCounter() {
+        id = 0;
+    }
 }
 
 

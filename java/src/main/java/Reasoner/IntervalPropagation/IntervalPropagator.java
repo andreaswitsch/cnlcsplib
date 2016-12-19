@@ -4,25 +4,26 @@
 
 package Reasoner.IntervalPropagation;
 
-import Alica.Reasoner.CNSAT.CNSat;
-import Alica.Reasoner.CNSAT.Var;
-import Alica.Reasoner.IntervalPropagation.RecursivePropagate;
-import Alica.Reasoner.IntervalPropagation.ResetIntervals;
-import Alica.Reasoner.IntervalPropagation.UnsolveableException;
-import CS2JNet.JavaSupport.language.RefSupport;
+import AutoDiff.Term;
+import Reasoner.CNSAT.Assignment;
+import Reasoner.CNSAT.CNSat;
+import Reasoner.CNSAT.Var;
+import java.util.LinkedList;
+import java.util.List;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 public class IntervalPropagator   
 {
     // :ITermVisitor<bool>
     private ResetIntervals ri;
     private RecursivePropagate rp;
-    private double[][] globalRanges = new double[][]();
-    private int dim = new int();
-    private AutoDiff.Variable[] vars = new AutoDiff.Variable[]();
+    private Double[][] globalRanges;
+    private int dim;
+    private AutoDiff.Variable[] vars;
     private CNSat solver;
     //private SetParents sp;
-    public static int updates = new int();
-    public static int visits = new int();
+    public static int updates;
+    public static int visits;
     public IntervalPropagator() throws Exception {
         this.ri = new ResetIntervals();
         this.rp = new RecursivePropagate();
@@ -30,73 +31,78 @@ public class IntervalPropagator
 
     //this.sp = new SetParents();
     public void printStats() throws Exception {
-        Console.WriteLine("IP Steps: {0}/{1}", updates, visits);
+        System.out.println("IP Steps: "+updates+"/"+visits);
     }
 
-    public void setGlobalRanges(AutoDiff.Variable[] vars, double[][] ranges, CNSat solver) throws Exception {
-        for (int i = 0;i < vars.Length;i++)
+    public void setGlobalRanges(AutoDiff.Variable[] vars, Double[][] ranges, CNSat solver) throws Exception {
+        for (int i = 0;i < vars.length;i++)
         {
-            vars[i].GlobalMin = ranges[i, 0];
-            vars[i].GlobalMax = ranges[i, 1];
+            vars[i].GlobalMin = ranges[i][0];
+            vars[i].GlobalMax = ranges[i][1];
         }
         this.globalRanges = ranges;
         this.vars = vars;
-        this.dim = vars.Length;
+        this.dim = vars.length;
         this.solver = solver;
         updates = 0;
         visits = 0;
     }
 
-    public boolean propagate(List<Var> decisions, RefSupport<double[][]> completeRanges, RefSupport<List<Var>> offenders) throws Exception {
+    public boolean propagate(List<Var> decisions, MutableObject<Double[][]> completeRanges, MutableObject<List<Var>>
+        offenders)
+        throws Exception {
         offenders.setValue(null);
-        completeRanges.setValue(new double[dim, 2]);
-        Buffer.BlockCopy(globalRanges, 0, completeRanges.getValue(), 0, * 2 * dim);
-        for (int i = decisions.Count - 1;i >= 0;i--)
+        completeRanges.setValue(new Double[dim][2]);
+        for (int i = 0; i < dim; i++) {
+            System.arraycopy(globalRanges[i], 0, completeRanges.getValue()[i], 0, completeRanges.getValue()[i].length);
+        }
+//        System.arraycopy(globalRanges,0, completeRanges.getValue(),0 , 2 * dim);
+        for (int i = decisions.size() - 1;i >= 0;i--)
         {
-            double[][] curRanges = new double[][]();
-            if (decisions[i].Assignment == Alica.Reasoner.CNSAT.Assignment.True)
+            Double[][] curRanges;
+            if (decisions.get(i).getAssignment() == Assignment.True)
             {
-                if (decisions[i].PositiveRanges == null)
+                if (decisions.get(i).getPositiveRanges() == null)
                 {
-                    if (!PropagateSingle(decisions[i], true))
+                    if (!propagateSingle(decisions.get(i), true))
                     {
-                        offenders.setValue(new List<Var>());
-                        offenders.getValue().Add(decisions[i]);
+                        offenders.setValue(new LinkedList<Var>());
+                        offenders.getValue().add(decisions.get(i));
                         return false;
                     }
                      
                 }
                  
-                curRanges = decisions[i].PositiveRanges;
+                curRanges = decisions.get(i).getPositiveRanges();
             }
             else
             {
-                if (decisions[i].NegativeRanges == null)
+                if (decisions.get(i).getNegativeRanges() == null)
                 {
-                    if (!PropagateSingle(decisions[i], false))
+                    if (!propagateSingle(decisions.get(i), false))
                     {
-                        offenders.setValue(new List<Var>());
-                        offenders.getValue().Add(decisions[i]);
+                        offenders.setValue(new LinkedList<Var>());
+                        offenders.getValue().add(decisions.get(i));
                         return false;
                     }
                      
                 }
                  
-                curRanges = decisions[i].NegativeRanges;
+                curRanges = decisions.get(i).getNegativeRanges();
             } 
             for (int j = dim - 1;j >= 0;j--)
             {
                 //Console.WriteLine("{0} B4: [{1}..{2}]",j,completeRanges[j,0],completeRanges[j,1]);
-                completeRanges.getValue()[j, 0] = Math.Max(completeRanges.getValue()[j, 0], curRanges[j, 0]);
-                completeRanges.getValue()[j, 1] = Math.Min(completeRanges.getValue()[j, 1], curRanges[j, 1]);
+                completeRanges.getValue()[j][0] = Math.max(completeRanges.getValue()[j][0], curRanges[j][0]);
+                completeRanges.getValue()[j][1] = Math.min(completeRanges.getValue()[j][1], curRanges[j][1]);
                 //Console.WriteLine("{0} AF: [{1}..{2}]",j,completeRanges[j,0],completeRanges[j,1]);
-                if (completeRanges.getValue()[j, 0] > completeRanges.getValue()[j, 1])
+                if (completeRanges.getValue()[j][0] > completeRanges.getValue()[j][1])
                 {
                     //ranges collapsed, build offenders
-                    offenders.setValue(new List<Var>());
-                    for (int k = decisions.Count - 1;k >= i;k--)
+                    offenders.setValue(new LinkedList<>());
+                    for (int k = decisions.size() - 1;k >= i;k--)
                     {
-                        offenders.getValue().Add(decisions[k]);
+                        offenders.getValue().add(decisions.get(k));
                     }
                     return false;
                 }
@@ -107,20 +113,20 @@ public class IntervalPropagator
     }
 
     public boolean prePropagate(List<Var> vars) throws Exception {
-        for (int i = vars.Count - 1;i >= 0;--i)
+        for (int i = vars.size() - 1;i >= 0;--i)
         {
-            if (vars[i].Assignment != Alica.Reasoner.CNSAT.Assignment.False && !PropagateSingle(vars[i], true))
+            if (vars.get(i).getAssignment() != Assignment.False && !propagateSingle(vars.get(i), true))
             {
-                //Console.WriteLine(vars[i]+" true not doable");
-                if (!solver.PreAddIUnitClause(vars[i], Alica.Reasoner.CNSAT.Assignment.False))
+                //Console.WriteLine(vars.get(i)+" true not doable");
+                if (!solver.preAddIUnitClause(vars.get(i), Assignment.False))
                     return false;
                  
             }
              
-            if (vars[i].Assignment != Alica.Reasoner.CNSAT.Assignment.True && !PropagateSingle(vars[i], false))
+            if (vars.get(i).getAssignment() != Assignment.True && !propagateSingle(vars.get(i), false))
             {
-                //Console.WriteLine(vars[i]+" false not doable");
-                if (!solver.PreAddIUnitClause(vars[i], Alica.Reasoner.CNSAT.Assignment.True))
+                //Console.WriteLine(vars.get(i)+" false not doable");
+                if (!solver.preAddIUnitClause(vars.get(i), Assignment.True))
                     return false;
                  
             }
@@ -143,16 +149,16 @@ public class IntervalPropagator
         }
         else
         {
-            if (!Propagate(v.getTerm().Negate()))
+            if (!propagate(v.getTerm().negate()))
                 return false;
              
         } 
         double rangeSize = 0;
-        double[][] range = new double[dim, 2];
+        Double[][] range = new Double[dim][2];
         for (int i = dim - 1;i >= 0;--i)
         {
-            range[i, 0] = vars[i].Min;
-            range[i, 1] = vars[i].Max;
+            range[i][0] = vars[i].Min;
+            range[i][1] = vars[i].Max;
             double d = vars[i].Max - vars[i].Min;
             rangeSize += d * d;
         }
@@ -170,7 +176,7 @@ public class IntervalPropagator
     }
 
     public boolean propagate(Term term) throws Exception {
-        term.Accept(this.ri);
+        term.accept(this.ri);
         //term.Accept(this.sp);
         term.Min = 1;
         term.Max = 1;

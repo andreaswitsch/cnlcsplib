@@ -5,10 +5,12 @@
 package Reasoner.IntervalPropagation;
 
 
-public class TermList   
+import AutoDiff.Term;
+
+public class TermList
 {
-    public Term First = new Term();
-    public Term Last = new Term();
+    public Term First;
+    public Term Last;
     public TermList() throws Exception {
     }
 

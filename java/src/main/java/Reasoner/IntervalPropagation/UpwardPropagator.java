@@ -5,36 +5,19 @@
 package Reasoner.IntervalPropagation;
 
 
-import Alica.Reasoner.IntervalPropagation.DownwardPropagator;
-import Alica.Reasoner.IntervalPropagation.IntervalPropagator;
-import Alica.Reasoner.IntervalPropagation.TermList;
-import Alica.Reasoner.IntervalPropagation.UnsolveableException;
-import AutoDiff.Gp;
+import AutoDiff.ITermVisitor;
 import AutoDiff.Product;
 import AutoDiff.Term;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
+import AutoDiff.*;
 
-//#define DEBUG_UP
-//using Alica.Reasoner;
-//using Al=Alica;
-public class UpwardPropagator  extends ITermVisitor<boolean> 
+public class UpwardPropagator implements ITermVisitor<Boolean>
 {
     public TermList Changed;
-    //internal Queue<Term> Changed;
-    /*private void AddAllChanged(List<Term> l) {
-    			foreach(Term t in l) {
-    				if(!Changed.Contains(t)) Changed.Enqueue(t);
-    			}
-    		}*/
+
     private void addChanged(Term t) throws Exception {
-        for (Object __dummyForeachVar0 : t.Parents)
+        for (Term s : t.Parents)
         {
-            /*foreach(Term s in t.Parents) {
-            				Changed.Enqueue(s);
-            			}
-            			Changed.Enqueue(t);*/
-            Term s = (Term)__dummyForeachVar0;
-            //Changed.Enqueue(s);
             if (!Changed.contains(s))
                 Changed.enqueue(s);
              
@@ -45,49 +28,37 @@ public class UpwardPropagator  extends ITermVisitor<boolean>
          
     }
 
-    //Changed.Enqueue(t);
     public UpwardPropagator() throws Exception {
     }
 
-    private DownwardPropagator __DP;
-    public DownwardPropagator getDP() {
-        return __DP;
-    }
-
-    public void setDP(DownwardPropagator value) {
-        __DP = value;
-    }
-
-    public boolean visit(Constant constant) throws Exception {
+    public Boolean visit(Constant constant) throws Exception {
         return false;
     }
 
-    public boolean visit(Zero zero) throws Exception {
+    public Boolean visit(Zero zero) throws Exception {
         return false;
     }
 
-    public boolean visit(ConstPower intPower) throws Exception {
-        boolean includesZero = intPower.Base.Min * intPower.Base.Max <= 0;
-        if (intPower.Exponent > 0)
+    public Boolean visit(ConstPower intPower) throws Exception {
+        boolean includesZero = intPower.getBase().Min * intPower.getBase().Max <= 0;
+        if (intPower.getExponent() > 0)
         {
-            double a = Math.Pow(intPower.Base.Max, intPower.Exponent);
-            double b = Math.Pow(intPower.Base.Min, intPower.Exponent);
+            double a = Math.pow(intPower.getBase().Max, intPower.getExponent());
+            double b = Math.pow(intPower.getBase().Min, intPower.getExponent());
             if (includesZero)
             {
-                if (UpdateInterval(intPower, Math.Min(0, Math.Min(a, b)), Math.Max(0, Math.Max(a, b))))
+                if (updateInterval(intPower, Math.min(0, Math.min(a, b)), Math.max(0, Math.max(a, b))))
                 {
-                    //if(UpdateInterval(intPower,Math.Min(0,Math.Pow(intPower.Base.Min,intPower.Exponent)),Math.Max(0,Math.Pow(intPower.Base.Max,intPower.Exponent)))) {
-                    AddChanged(intPower);
+                    addChanged(intPower);
                     return true;
                 }
                  
             }
             else
             {
-                if (UpdateInterval(intPower, Math.Min(a, b), Math.Max(a, b)))
+                if (updateInterval(intPower, Math.min(a, b), Math.max(a, b)))
                 {
-                    //if(UpdateInterval(intPower,Math.Pow(intPower.Base.Min,intPower.Exponent),Math.Pow(intPower.Base.Max,intPower.Exponent))) {
-                    AddChanged(intPower);
+                    addChanged(intPower);
                     return true;
                 }
                  
@@ -95,15 +66,11 @@ public class UpwardPropagator  extends ITermVisitor<boolean>
         }
         else if (!includesZero)
         {
-            double a = Math.Pow(intPower.Base.Max, intPower.Exponent);
-            double b = Math.Pow(intPower.Base.Min, intPower.Exponent);
-            //Console.WriteLine("Cur: {0} [{1} : {2}]",intPower,intPower.Min,intPower.Max);
-            //Console.WriteLine("Base: [{0} : {1}]",intPower.Base.Min,intPower.Base.Max);
-            if (UpdateInterval(intPower, Math.Min(a, b), Math.Max(a, b)))
+            double a = Math.pow(intPower.getBase().Max, intPower.getExponent());
+            double b = Math.pow(intPower.getBase().Min, intPower.getExponent());
+            if (updateInterval(intPower, Math.min(a, b), Math.max(a, b)))
             {
-                //Console.WriteLine("From UW intpower {0}",intPower.Exponent);
-                //if(UpdateInterval(intPower,Math.Pow(intPower.Base.Max,intPower.Exponent),Math.Pow(intPower.Base.Min,intPower.Exponent))) {
-                AddChanged(intPower);
+                addChanged(intPower);
                 return true;
             }
              
@@ -113,90 +80,60 @@ public class UpwardPropagator  extends ITermVisitor<boolean>
     }
 
     //else +- Infinity is possible
-    public boolean visit(TermPower tp) throws Exception {
-        throw new NotImplementedException("Propagation for TemPower not implemented");
+    public Boolean visit(TermPower tp) throws Exception {
+        throw new NotImplementedException("Propagation for TermPower not implemented");
     }
 
-    public boolean visit(Gp gp) throws Exception {
-        throw new NotImplementedException("Propagation for TemPower not implemented");
-    }
 
-    public boolean visit(Product product) throws Exception {
-        double aa = product.Left.Min * product.Right.Min;
-        double bb = product.Left.Max * product.Right.Max;
+    public Boolean visit(Product product) throws Exception {
+        double aa = product.getLeft().Min * product.getRight().Min;
+        double bb = product.getLeft().Max * product.getRight().Max;
         double max;
         double min;
-        if (product.Left == product.Right)
+        if (product.getLeft() == product.getRight())
         {
-            min = Math.Min(aa, bb);
-            max = Math.Max(aa, bb);
-            if (product.Left.Min * product.Left.Max <= 0)
+            min = Math.min(aa, bb);
+            max = Math.max(aa, bb);
+            if (product.getLeft().Min * product.getLeft().Max <= 0)
                 min = 0;
              
         }
         else
         {
-            double ab = product.Left.Min * product.Right.Max;
-            double ba = product.Left.Max * product.Right.Min;
-            max = Math.Max(aa, Math.Max(ab, Math.Max(ba, bb)));
-            min = Math.Min(aa, Math.Min(ab, Math.Min(ba, bb)));
+            double ab = product.getLeft().Min * product.getRight().Max;
+            double ba = product.getLeft().Max * product.getRight().Min;
+            max = Math.max(aa, Math.max(ab, Math.max(ba, bb)));
+            min = Math.min(aa, Math.min(ab, Math.min(ba, bb)));
         } 
-        if (UpdateInterval(product, min, max))
+        if (updateInterval(product, min, max))
         {
-            AddChanged(product);
+            addChanged(product);
             return true;
         }
          
         return false;
     }
 
-    public boolean visit(Sigmoid sigmoid) throws Exception {
-        throw new NotImplementedException("Sigmoidal propagation not implemented");
+    public Boolean visit(LinSigmoid sigmoid) throws Exception {
+        throw new NotImplementedException("LinSigmoid for TermPower not implemented");
     }
 
-    public boolean visit(LinSigmoid sigmoid) throws Exception {
-        throw new NotImplementedException("Sigmoidal propagation not implemented");
-    }
-
-    public boolean visit(LTConstraint constraint) throws Exception {
-        if (constraint.Left.Max < constraint.Right.Min)
+    public Boolean visit(LTConstraint constraint) throws Exception {
+        if (constraint.getLeft().Max < constraint.getRight().Min)
         {
-            if (UpdateInterval(constraint, 1, 1))
+            if (updateInterval(constraint, 1, 1))
             {
-                AddChanged(constraint);
+                addChanged(constraint);
                 return true;
             }
              
         }
-        else if (constraint.Left.Min >= constraint.Right.Max)
+        else if (constraint.getLeft().Min >= constraint.getRight().Max)
         {
-            //Console.WriteLine("LT UP negated: {0} {1}",constraint.Left.Min ,constraint.Right.Max);
-            if (UpdateInterval(constraint, Double.NegativeInfinity, 0))
+            //Console.WriteLine("LT UP negated: {0} {1}",constraint.getLeft().Min ,constraint.getRight().Max);
+            if (updateInterval(constraint, Double.NEGATIVE_INFINITY, 0))
             {
-                AddChanged(constraint);
-                return true;
-            }
-             
-        }
-          
-        return false;
-    }
-
-    public boolean visit(LTEConstraint constraint) throws Exception {
-        if (constraint.Left.Max <= constraint.Right.Min)
-        {
-            if (UpdateInterval(constraint, 1, 1))
-            {
-                AddChanged(constraint);
-                return true;
-            }
-             
-        }
-        else if (constraint.Left.Min > constraint.Right.Max)
-        {
-            if (UpdateInterval(constraint, Double.NegativeInfinity, 0))
-            {
-                AddChanged(constraint);
+                addChanged(constraint);
                 return true;
             }
              
@@ -205,64 +142,64 @@ public class UpwardPropagator  extends ITermVisitor<boolean>
         return false;
     }
 
-    public boolean visit(Min min) throws Exception {
-        if (UpdateInterval(min, Math.Min(min.Left.Min, min.Right.Min), Math.Max(min.Left.Max, min.Right.Max)))
+    public Boolean visit(LTEConstraint constraint) throws Exception {
+        if (constraint.getLeft().Max <= constraint.getRight().Min)
         {
-            AddChanged(min);
+            if (updateInterval(constraint, 1, 1))
+            {
+                addChanged(constraint);
+                return true;
+            }
+             
+        }
+        else if (constraint.getLeft().Min > constraint.getRight().Max)
+        {
+            if (updateInterval(constraint, Double.NEGATIVE_INFINITY, 0))
+            {
+                addChanged(constraint);
+                return true;
+            }
+             
+        }
+          
+        return false;
+    }
+
+    public Boolean visit(Min min) throws Exception {
+        if (updateInterval(min, Math.min(min.getLeft().Min, min.getRight().Min), Math.max(min.getLeft().Max, min.getRight().Max)))
+        {
+            addChanged(min);
             return true;
         }
          
         return false;
     }
 
-    public boolean visit(Max max) throws Exception {
-        if (UpdateInterval(max, Math.Min(max.Left.Min, max.Right.Min), Math.Max(max.Left.Max, max.Right.Max)))
+    public Boolean visit(Max max) throws Exception {
+        if (updateInterval(max, Math.min(max.getLeft().Min, max.getRight().Min), Math.max(max.getLeft().Max, max.getRight().Max)))
         {
-            AddChanged(max);
+            addChanged(max);
             return true;
         }
          
         return false;
     }
 
-    public boolean visit(And and) throws Exception {
-        if (and.Left.Min > 0 && and.Right.Min > 0)
+    public Boolean visit(And and) throws Exception {
+        if (and.getLeft().Min > 0 && and.getRight().Min > 0)
         {
-            if (UpdateInterval(and, 1, 1))
+            if (updateInterval(and, 1, 1))
             {
-                AddChanged(and);
+                addChanged(and);
                 return true;
             }
              
         }
-        else if (and.Left.Max <= 0 || and.Right.Max <= 0)
+        else if (and.getLeft().Max <= 0 || and.getRight().Max <= 0)
         {
-            if (UpdateInterval(and, Double.NegativeInfinity, 0))
+            if (updateInterval(and, Double.NEGATIVE_INFINITY, 0))
             {
-                AddChanged(and);
-                return true;
-            }
-             
-        }
-          
-        return false;
-    }
-
-    public boolean visit(Or or) throws Exception {
-        if (or.Left.Min > 0 || or.Right.Min > 0)
-        {
-            if (UpdateInterval(or, 1, 1))
-            {
-                AddChanged(or);
-                return true;
-            }
-             
-        }
-        else if (or.Left.Max <= 0 && or.Right.Max <= 0)
-        {
-            if (UpdateInterval(or, Double.NegativeInfinity, 0))
-            {
-                AddChanged(or);
+                addChanged(and);
                 return true;
             }
              
@@ -271,41 +208,64 @@ public class UpwardPropagator  extends ITermVisitor<boolean>
         return false;
     }
 
-    public boolean visit(ConstraintUtility cu) throws Exception {
-        if (cu.Constraint.Max < 1)
+    public Boolean visit(Or or) throws Exception {
+        if (or.getLeft().Min > 0 || or.getRight().Min > 0)
         {
-            if (UpdateInterval(cu, Double.NegativeInfinity, cu.Constraint.Max))
+            if (updateInterval(or, 1, 1))
             {
-                AddChanged(cu);
+                addChanged(or);
+                return true;
+            }
+             
+        }
+        else if (or.getLeft().Max <= 0 && or.getRight().Max <= 0)
+        {
+            if (updateInterval(or, Double.NEGATIVE_INFINITY, 0))
+            {
+                addChanged(or);
+                return true;
+            }
+             
+        }
+          
+        return false;
+    }
+
+    public Boolean visit(ConstraintUtility cu) throws Exception {
+        if (cu.getConstraint().Max < 1)
+        {
+            if (updateInterval(cu, Double.NEGATIVE_INFINITY, cu.getConstraint().Max))
+            {
+                addChanged(cu);
                 return true;
             }
              
         }
          
-        if (UpdateInterval(cu, Double.NegativeInfinity, cu.Utility.Max))
+        if (updateInterval(cu, Double.NEGATIVE_INFINITY, cu.getUtility().Max))
         {
-            AddChanged(cu);
+            addChanged(cu);
             return true;
         }
          
         return false;
     }
 
-    public boolean visit(Reification reif) throws Exception {
-        if (reif.Condition.Min > 0)
+    public Boolean visit(Reification reif) throws Exception {
+        if (reif.getCondition().Min > 0)
         {
-            if (UpdateInterval(reif, reif.MaxVal, reif.MaxVal))
+            if (updateInterval(reif, reif.getMaxVal(), reif.getMaxVal()))
             {
-                AddChanged(reif);
+                addChanged(reif);
                 return true;
             }
              
         }
-        else if (reif.Condition.Max < 0)
+        else if (reif.getCondition().Max < 0)
         {
-            if (UpdateInterval(reif, reif.MinVal, reif.MinVal))
+            if (updateInterval(reif, reif.getMinVal(), reif.getMinVal()))
             {
-                AddChanged(reif);
+                addChanged(reif);
                 return true;
             }
              
@@ -314,157 +274,170 @@ public class UpwardPropagator  extends ITermVisitor<boolean>
         return false;
     }
 
-    public boolean visit(Sum sum) throws Exception {
+    @Override
+    public Boolean visit(final Negation r) throws Exception
+    {
+        return null;
+    }
+
+    public Boolean visit(Sum sum) throws Exception {
         double min = 0;
         double max = 0;
-        for (int i = sum.Terms.Count - 1;i >= 0;--i)
+        for (int i = sum.getTerms().length - 1;i >= 0;--i)
         {
-            min += sum.Terms[i].Min;
-            max += sum.Terms[i].Max;
+            min += sum.getTerms()[i].Min;
+            max += sum.getTerms()[i].Max;
         }
-        if (UpdateInterval(sum, min, max))
+        if (updateInterval(sum, min, max))
         {
-            AddChanged(sum);
+            addChanged(sum);
             return true;
         }
          
         return false;
     }
 
-    public boolean visit(AutoDiff.Variable variable) throws Exception {
+    public Boolean visit(AutoDiff.Variable variable) throws Exception {
         return true;
     }
 
-    public boolean visit(Log log) throws Exception {
-        if (UpdateInterval(log, Math.Log(log.Arg.Min), Math.Log(log.Arg.Max)))
+    public Boolean visit(Log log) throws Exception {
+        if (updateInterval(log, Math.log(log.getArg().Min), Math.log(log.getArg().Max)))
         {
-            AddChanged(log);
+            addChanged(log);
             return true;
         }
          
         return false;
     }
 
-    public boolean visit(Sin sin) throws Exception {
-        double size = sin.Arg.Max - sin.Arg.Min;
+    public Boolean visit(Sin sin) throws Exception {
+        double size = sin.getArg().Max - sin.getArg().Min;
         boolean c = false;
         if (size <= 2 * Math.PI)
         {
-            double a = Math.Sin(sin.Arg.Max);
-            double b = Math.Sin(sin.Arg.Min);
+            double a = Math.sin(sin.getArg().Max);
+            double b = Math.sin(sin.getArg().Min);
             double halfPI = Math.PI / 2;
-            double x = Math.Ceiling((sin.Arg.Min - halfPI) / Math.PI);
-            double y = Math.Floor((sin.Arg.Max - halfPI) / Math.PI);
+            double x = Math.ceil((sin.getArg().Min - halfPI) / Math.PI);
+            double y = Math.floor((sin.getArg().Max - halfPI) / Math.PI);
             if (x == y)
             {
                 //single extrema
                 if (((int)x) % 2 == 0)
                 {
                     //maxima
-                    c = UpdateInterval(sin, Math.Min(a, b), 1);
+                    c = updateInterval(sin, Math.min(a, b), 1);
                 }
                 else
                 {
                     //minima
-                    c = UpdateInterval(sin, -1, Math.Max(a, b));
+                    c = updateInterval(sin, -1, Math.max(a, b));
                 } 
             }
             else if (x > y)
             {
                 //no extrema
-                c = UpdateInterval(sin, Math.Min(a, b), Math.Max(a, b));
+                c = updateInterval(sin, Math.min(a, b), Math.max(a, b));
             }
               
         }
          
         //multiple extrema, don't update
         if (c)
-            AddChanged(sin);
+            addChanged(sin);
          
         return c;
     }
 
-    public boolean visit(Cos cos) throws Exception {
-        double size = cos.Arg.Max - cos.Arg.Min;
+    public Boolean visit(Cos cos) throws Exception {
+        double size = cos.getArg().Max - cos.getArg().Min;
         boolean c = false;
         if (size <= 2 * Math.PI)
         {
-            double a = Math.Cos(cos.Arg.Max);
-            double b = Math.Cos(cos.Arg.Min);
-            double x = Math.Ceiling(cos.Arg.Min / Math.PI);
-            double y = Math.Floor(cos.Arg.Max / Math.PI);
+            double a = Math.cos(cos.getArg().Max);
+            double b = Math.cos(cos.getArg().Min);
+            double x = Math.ceil(cos.getArg().Min / Math.PI);
+            double y = Math.floor(cos.getArg().Max / Math.PI);
             if (x == y)
             {
                 //single extrema
                 if (((int)x) % 2 == 0)
                 {
                     //maxima
-                    c = UpdateInterval(cos, Math.Min(a, b), 1);
+                    c = updateInterval(cos, Math.min(a, b), 1);
                 }
                 else
                 {
                     //minima
-                    c = UpdateInterval(cos, -1, Math.Max(a, b));
+                    c = updateInterval(cos, -1, Math.max(a, b));
                 } 
             }
             else if (x > y)
             {
                 //no extrema
-                c = UpdateInterval(cos, Math.Min(a, b), Math.Max(a, b));
+                c = updateInterval(cos, Math.min(a, b), Math.max(a, b));
             }
               
         }
          
         //multiple extrema, don't update
         if (c)
-            AddChanged(cos);
+            addChanged(cos);
          
         return c;
     }
 
-    public boolean visit(Abs abs) throws Exception {
-        boolean containsZero = abs.Arg.Min * abs.Arg.Max <= 0;
+    public Boolean visit(Abs abs) throws Exception {
+        boolean containsZero = abs.getArg().Min * abs.getArg().Max <= 0;
         boolean c = false;
         if (containsZero)
-            c = UpdateInterval(abs, 0, Math.Max(Math.Abs(abs.Arg.Min), Math.Abs(abs.Arg.Max)));
+            c = updateInterval(abs, 0, Math.max(Math.abs(abs.getArg().Min), Math.abs(abs.getArg().Max)));
         else
-            c = UpdateInterval(abs, Math.Min(Math.Abs(abs.Arg.Min), Math.Abs(abs.Arg.Max)), Math.Max(Math.Abs(abs.Arg.Min), Math.Abs(abs.Arg.Max))); 
+            c = updateInterval(abs, Math.min(Math.abs(abs.getArg().Min), Math.abs(abs.getArg().Max)), Math.max(Math.abs(abs.getArg().Min), Math.abs(abs.getArg().Max))); 
         if (c)
-            AddChanged(abs);
+            addChanged(abs);
          
         return c;
     }
 
-    public boolean visit(Exp exp) throws Exception {
-        if (UpdateInterval(exp, Math.Exp(exp.Arg.Min), Math.Exp(exp.Arg.Max)))
+    public Boolean visit(Exp exp) throws Exception {
+        if (updateInterval(exp, Math.exp(exp.getArg().Min), Math.exp(exp.getArg().Max)))
         {
-            AddChanged(exp);
+            addChanged(exp);
             return true;
         }
          
         return false;
     }
 
-    public boolean visit(Atan2 atan2) throws Exception {
-        throw new NotImplementedException("Atan2 prop not implemented!");
+    @Override
+    public Boolean visit(final Sigmoid sigmoid) throws Exception
+    {
+        throw new NotImplementedException("Sigmoid Propagation not implemeted");
+    }
+
+    public Boolean visit(Atan2 atan2) throws Exception {
+        throw new NotImplementedException("atan2 Propagation not implemeted");
     }
 
     protected void outputChange(Term t, double oldmin, double oldmax) throws Exception {
         //Console.WriteLine("UW: Interval of {0} is now [{1}, {2}]",t,t.Min,t.Max);
         double oldwidth = oldmax - oldmin;
         double newwidth = t.Max - t.Min;
-        if (t instanceof AutoDiff.Variable)
-            Console.WriteLine("UW shrinking [{0}..{1}] to [{2}..{3}] by {4} ({5}%)", oldmin, oldmax, t.Min, t.Max, oldwidth - newwidth, (oldwidth - newwidth) / oldwidth * 100);
+        System.out.println("notImplemented");
+//        if (t instanceof AutoDiff.Variable)
+//            Console.WriteLine("UW shrinking [{0}..{1}] to [{2}..{3}] by {4} ({5}%)", oldmin, oldmax, t.Min, t.Max, oldwidth - newwidth, (oldwidth - newwidth) / oldwidth * 100);
          
     }
 
-    protected boolean updateInterval(Term t, double min, double max) throws Exception {
+    protected Boolean updateInterval(Term t, double min, double max) throws Exception {
         boolean ret = t.Min < min || t.Max > max;
-        if (!Double.IsNaN(min))
-            t.Min = Math.Max(t.Min, min);
+        if (!Double.isNaN(min))
+            t.Min = Math.max(t.Min, min);
          
-        if (!Double.IsNaN(max))
-            t.Max = Math.Min(t.Max, max);
+        if (!Double.isNaN(max))
+            t.Max = Math.min(t.Max, max);
          
         if (ret)
             IntervalPropagator.updates++;

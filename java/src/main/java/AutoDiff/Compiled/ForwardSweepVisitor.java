@@ -342,4 +342,10 @@ public class ForwardSweepVisitor implements ITapeVisitor
     elem.Inputs[1].Weight = left / denom;
   }
 
+  @Override
+  public void visit(Negation elem) throws Exception {
+    double arg = valueOf(elem.Arg);
+    elem.Value = -arg;
+    elem.Inputs[0].Weight = -arg;
+  }
 }

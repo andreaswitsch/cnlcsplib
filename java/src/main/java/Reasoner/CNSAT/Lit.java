@@ -28,6 +28,16 @@ public class Lit implements ITermVisitor
         return getVar().getAssignment() != getSign() && getVar().getAssignment() != Assignment.Unassigned;
     }
 
+    public String toOutputString() {
+        String sign = "o";
+        if(this.getSign()==Assignment.True)
+            sign="+";
+        else if(this.getSign()==Assignment.False)
+            sign="-";
+
+        return sign + getVar().getTerm().toString();
+    }
+
     private Assignment __Sign = Assignment.False;
     public void setSign(Assignment value) {
         __Sign = value;
@@ -209,6 +219,11 @@ public class Lit implements ITermVisitor
     public Object visit(Atan2 atan2) throws Exception {
         atan2.getLeft().accept(this);
         atan2.getRight().accept(this);
+        return null;
+    }
+
+    public Object visit(Negation exp) throws Exception {
+        exp.getArg().accept(this);
         return null;
     }
 

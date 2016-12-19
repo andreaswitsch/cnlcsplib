@@ -411,4 +411,20 @@ public class Compiler implements ITermVisitor<Integer>
     return compile(atan2, var);
   }
 
+
+  public Integer visit(AutoDiff.Negation negation) throws Exception
+  {
+    int arg = negation.getArg().accept(this);
+
+    final Negation var = new Negation();
+
+    var.Arg = arg;
+    var.Inputs = new InputEdge[]
+        {
+            new InputEdge(arg),
+        };
+
+    return compile(negation, var);
+  }
+
 }

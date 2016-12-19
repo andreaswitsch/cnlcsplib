@@ -58,7 +58,7 @@ public class TermPower  extends Term
     public String toString() {
         try
         {
-            return String.format("termPower( {0}, {1} )", getBase(), getExponent());
+            return String.format("termPower( %s, %s )", getBase(), getExponent());
         }
         catch (RuntimeException __dummyCatchVar0)
         {

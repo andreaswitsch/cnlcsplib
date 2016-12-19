@@ -84,7 +84,6 @@ public class DiffVisitor implements ITapeVisitor
   @Override
   public void visit(Cos elem) throws Exception {
     LocalDerivative = -elem.Adjoint * Math.sin(valueOf(elem.Arg));
-    ;
   }
 
   @Override
@@ -390,6 +389,11 @@ public class DiffVisitor implements ITapeVisitor
     {
       LocalDerivative = valueOf(elem.Left) * elem.Adjoint / denom;
     }
+  }
+
+  @Override
+  public void visit(Negation elem) throws Exception {
+    LocalDerivative = elem.Adjoint * -valueOf(elem.Arg);
   }
 
 }

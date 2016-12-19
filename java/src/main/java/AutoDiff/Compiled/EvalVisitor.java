@@ -170,4 +170,8 @@ public class EvalVisitor implements ITapeVisitor
     elem.Value = Math.atan2(valueOf(elem.Left), valueOf(elem.Right));
   }
 
+  public void visit(Negation elem) throws Exception {
+    elem.Value = -valueOf(elem.Arg);
+  }
+
 }

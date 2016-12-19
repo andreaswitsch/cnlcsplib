@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 //#define CNSatDebug
 public class CNSat
@@ -130,28 +131,28 @@ public class CNSat
 
   private boolean recentBacktrack = false;
 
-  private int __UnitDecissions = 0;
+  private int unitDecissions = 0;
 
   public int getUnitDecissions()
   {
-    return __UnitDecissions;
+    return unitDecissions;
   }
 
   public void setUnitDecissions(int value)
   {
-    __UnitDecissions = value;
+    unitDecissions = value;
   }
 
-  private CNSMTGSolver __CNSMTGSolver;
+  private CNSMTGSolver cNSMTGSolver;
 
   public CNSMTGSolver getCNSMTGSolver()
   {
-    return __CNSMTGSolver;
+    return cNSMTGSolver;
   }
 
   public void setCNSMTGSolver(CNSMTGSolver value)
   {
-    __CNSMTGSolver = value;
+    cNSMTGSolver = value;
   }
 
   public CNSat() throws Exception
@@ -215,16 +216,14 @@ public class CNSat
 
   public void resetVariables() throws Exception
   {
-    for (Object __dummyForeachVar0 : variables) {
-      Var v = (Var) __dummyForeachVar0;
+    for (Var v : variables) {
       v.reset();
     }
   }
 
   protected void emptyClauseList(List<Clause> list) throws Exception
   {
-    for (Object __dummyForeachVar1 : list) {
-      Clause c = (Clause) __dummyForeachVar1;
+    for (Clause c : list) {
       c.watcher[0].getLit().getVar().getWatchList().remove(c.watcher[0]);
       c.watcher[0].getLit().setVariableCount(c.watcher[0].getLit().getVariableCount() - 1);
       c.watcher[1].getLit().getVar().getWatchList().remove(c.watcher[1]);
@@ -262,8 +261,7 @@ public class CNSat
       c.getLiterals().get(0).getVar().setAssignment(c.getLiterals().get(0).getSign());
       c.getLiterals().get(0).getVar().setReason(null);
       c.getLiterals().get(0).getVar().setLocked(true);
-      for (Object __dummyForeachVar2 : this.decisionLevel) {
-        DecisionLevel l = (DecisionLevel) __dummyForeachVar2;
+      for (DecisionLevel l : this.decisionLevel) {
         l.setLevel(l.getLevel() + 1);
       }
       return true;
@@ -291,10 +289,9 @@ public class CNSat
       c.getLiterals().get(0).getVar().setDecisionLevel(this.decisionLevel.get(0));
       c.getLiterals().get(0).getVar().setAssignment(c.getLiterals().get(0).getSign());
       c.getLiterals().get(0).getVar().setReason(null);
-      for (Object __dummyForeachVar3 : this.decisionLevel) {
+      for (DecisionLevel l : this.decisionLevel) {
         //Do we have to Lock T-Clauses?????
         //c.Literals[0].Var.Locked = true;
-        DecisionLevel l = (DecisionLevel) __dummyForeachVar3;
         l.setLevel(l.getLevel() + 1);
       }
       return true;
@@ -338,8 +335,7 @@ public class CNSat
       c.getLiterals().get(0).getVar().setAssignment(c.getLiterals().get(0).getSign());
       c.getLiterals().get(0).getVar().setReason(null);
       c.getLiterals().get(0).getVar().setLocked(true);
-      for (Object __dummyForeachVar4 : this.decisionLevel) {
-        DecisionLevel l = (DecisionLevel) __dummyForeachVar4;
+      for (DecisionLevel l : this.decisionLevel) {
         l.setLevel(l.getLevel() + 1);
       }
       setUnitDecissions(getUnitDecissions() + 1);
@@ -366,9 +362,8 @@ public class CNSat
     this.decisionLevel.clear();
     this.decisionLevelNull.setLevel(decisions.size());
     this.decisionLevel.add(this.decisionLevelNull);
-    for (Object __dummyForeachVar5 : clauses) {
+    for (Clause cl : clauses) {
       //int unitClauseCount = 0;
-      Clause cl = (Clause) __dummyForeachVar5;
       if (cl.getLiterals().size() == 1)
         //unitClauseCount++;
         cl.setSatisfied(true);
@@ -382,7 +377,7 @@ public class CNSat
     int restartNum = 100;
     learntNum = 700;
     restartCount = 0;
-    Double[][] curRanges = null;
+    MutableObject<Double[][]> curRanges = new MutableObject<>();
     Double[] solution = null;
     DecisionLevel evaluatedDL = null;
     //check: is already undecisdable?
@@ -409,25 +404,25 @@ public class CNSat
         if(getUseIntervalProp() && !getCNSMTGSolver().intervalPropagate(decisions, curRanges)) {
           continue;
         } else {
-                    /*
-                    						//TODO: Heuristic Decision whether or not to query the T-solver
-                    						//comes in here
-                    						//double satRatio = ((double)satClauseCount) / clauses.Count;
-                    						//double varRatio = ((double)decisions.Count) / variables.Count;
-                    						//if (recentBacktrack || varRatio < r.NextDouble()) { //|| satRatio > r.NextDouble()) {
-                    						//if (recentBacktrack || satRatio > r.NextDouble()) {
-                    						//if (decisionCount % 10 == 0) {
-                    						//	recentBacktrack = false;
-                    						//if(solution==null || !SolutionInsideRange(solution, curRanges)) {
-                    						//if(!VarAssignmentInsideRange(Decisions[Decisions.Count-1],curRanges)) {
-                    						//if(evaluatedDL==null || !AssignmentInsideRange(evaluatedDL, curRanges)) {
-                    							if (!CNSMTGSolver.ProbeForSolution(decisions, out solution)) {
-                    								continue;
-                    							}
-                    						//	evaluatedDL = DecisionLevel[DecisionLevel.Count-1];
-                    						//}
-                    						//}
-                    						*/
+          /*
+          //TODO: Heuristic Decision whether or not to query the T-solver
+          //comes in here
+          //double satRatio = ((double)satClauseCount) / clauses.Count;
+          //double varRatio = ((double)decisions.Count) / variables.Count;
+          //if (recentBacktrack || varRatio < r.NextDouble()) { //|| satRatio > r.NextDouble()) {
+          //if (recentBacktrack || satRatio > r.NextDouble()) {
+          //if (decisionCount % 10 == 0) {
+          //	recentBacktrack = false;
+          //if(solution==null || !SolutionInsideRange(solution, curRanges)) {
+          //if(!VarAssignmentInsideRange(Decisions[Decisions.Count-1],curRanges)) {
+          //if(evaluatedDL==null || !AssignmentInsideRange(evaluatedDL, curRanges)) {
+            if (!CNSMTGSolver.ProbeForSolution(decisions, out solution)) {
+              continue;
+            }
+          //	evaluatedDL = DecisionLevel[DecisionLevel.Count-1];
+          //}
+          //}
+          */
           if (!getCNSMTGSolver().probeForSolution(decisions, solution)) {
             continue;
           }
@@ -468,8 +463,7 @@ public class CNSat
       //Forget unused clauses
       if (decisionCount % 1000 == 0) {
         reduceDB(learntNum);
-        for (Object __dummyForeachVar6 : variables) {
-          Var v = (Var) __dummyForeachVar6;
+        for (Var v : variables) {
           v.setActivity(v.getActivity() / 4);
         }
       }
@@ -618,8 +612,7 @@ public class CNSat
             w2.getLit().getVar().setDecisionLevel(decisionLevel.get(decisionLevel.size() - 1));
             decisions.add(w2.getLit().getVar());
             w2.getLit().getVar().setReason(c);
-            for (Object __dummyForeachVar9 : w2.getLit().getVar().getWatchList()) {
-              Watcher wi = (Watcher) __dummyForeachVar9;
+            for (Watcher wi : w2.getLit().getVar().getWatchList()) {
               wi.getClause().setLastModVar(w2.getLit().getVar());
             }
           } else
@@ -689,8 +682,7 @@ public class CNSat
         //Check whether reason for current literal is already in learnt -> remove l
         Clause re = l.getVar().getReason();
         boolean found = false;
-        for (Object __dummyForeachVar10 : re.getLiterals()) {
-          Lit rel = (Lit) __dummyForeachVar10;
+        for (Lit rel : re.getLiterals()) {
           if (!rel.getVar().getSeen() && (rel.getVar().getDecisionLevel() != decisionLevel.get(0))) {
             found = true;
             break;
@@ -822,8 +814,7 @@ public class CNSat
 
   void printAssignments() throws Exception
   {
-    for (Object __dummyForeachVar14 : getVariables()) {
-      Var v = (Var) __dummyForeachVar14;
+    for (Var v : getVariables()) {
       v.print();
       System.out.print(" ");
     }

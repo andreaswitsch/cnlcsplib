@@ -4,178 +4,182 @@
 
 package Reasoner.IntervalPropagation;
 
+import AutoDiff.*;
+
 
 //using Alica.Reasoner;
 //using Al=Alica;
-public class SetParents  extends ITermVisitor<boolean> 
+public class SetParents implements ITermVisitor<Boolean>
 {
     public SetParents() throws Exception {
     }
 
-    public boolean visit(Constant constant) throws Exception {
+    public Boolean visit(Constant constant) throws Exception {
         return false;
     }
 
     //return UpdateInterval(constant,constant.Value,constant.Value);
-    public boolean visit(Zero zero) throws Exception {
+    public Boolean visit(Zero zero) throws Exception {
         return false;
     }
 
     //return UpdateInterval(zero,0,0);
-    public boolean visit(ConstPower intPower) throws Exception {
-        intPower.Base.Parents.Add(intPower);
+    public Boolean visit(ConstPower intPower) throws Exception {
+        intPower.getBase().Parents.add(intPower);
         return false;
     }
 
-    //intPower.Base.Accept(this);
-    public boolean visit(TermPower tp) throws Exception {
-        tp.Base.Parents.Add(tp);
-        tp.Exponent.Parents.Add(tp);
+    //intPower.getBase().Accept(this);
+    public Boolean visit(TermPower tp) throws Exception {
+        tp.getBase().Parents.add(tp);
+        tp.getExponent().Parents.add(tp);
         return false;
     }
 
-    public boolean visit(Gp gp) throws Exception {
-        throw new NotImplementedException();
+
+    public Boolean visit(Product product) throws Exception {
+        product.getLeft().Parents.add(product);
+        product.getRight().Parents.add(product);
         return false;
     }
 
-    public boolean visit(Product product) throws Exception {
-        product.Left.Parents.Add(product);
-        product.Right.Parents.Add(product);
+    //product.getLeft().Accept(this);
+    //product.getRight().Accept(this);
+    public Boolean visit(Sigmoid sigmoid) throws Exception {
+        sigmoid.getArg().Parents.add(sigmoid);
+        sigmoid.getMid().Parents.add(sigmoid);
         return false;
     }
 
-    //product.Left.Accept(this);
-    //product.Right.Accept(this);
-    public boolean visit(Sigmoid sigmoid) throws Exception {
-        sigmoid.Arg.Parents.Add(sigmoid);
-        sigmoid.Mid.Parents.Add(sigmoid);
-        return false;
-    }
-
-    //sigmoid.Arg.Accept(this);
+    //sigmoid.getArg().Accept(this);
     //sigmoid.Mid.Accept(this);
-    public boolean visit(LinSigmoid sigmoid) throws Exception {
-        sigmoid.Arg.Parents.Add(sigmoid);
+    public Boolean visit(LinSigmoid sigmoid) throws Exception {
+        sigmoid.getArg().Parents.add(sigmoid);
         return false;
     }
 
-    //sigmoid.Arg.Accept(this);
+    //sigmoid.getArg().Accept(this);
     //sigmoid.Mid.Accept(this);
-    public boolean visit(LTConstraint constraint) throws Exception {
-        constraint.Left.Parents.Add(constraint);
-        constraint.Right.Parents.Add(constraint);
+    public Boolean visit(LTConstraint constraint) throws Exception {
+        constraint.getLeft().Parents.add(constraint);
+        constraint.getRight().Parents.add(constraint);
         return false;
     }
 
-    //constraint.Left.Accept(this);
-    //constraint.Right.Accept(this);
-    public boolean visit(LTEConstraint constraint) throws Exception {
-        constraint.Left.Parents.Add(constraint);
-        constraint.Right.Parents.Add(constraint);
+    //constraint.getLeft().Accept(this);
+    //constraint.getRight().Accept(this);
+    public Boolean visit(LTEConstraint constraint) throws Exception {
+        constraint.getLeft().Parents.add(constraint);
+        constraint.getRight().Parents.add(constraint);
         return false;
     }
 
-    //constraint.Left.Accept(this);
-    //constraint.Right.Accept(this);
-    public boolean visit(Min min) throws Exception {
-        min.Left.Parents.Add(min);
-        min.Right.Parents.Add(min);
+    //constraint.getLeft().Accept(this);
+    //constraint.getRight().Accept(this);
+    public Boolean visit(Min min) throws Exception {
+        min.getLeft().Parents.add(min);
+        min.getRight().Parents.add(min);
         return false;
     }
 
-    //min.Left.Accept(this);
-    //min.Right.Accept(this);
-    public boolean visit(Reification reif) throws Exception {
-        reif.Condition.Parents.Add(reif);
+    //min.getLeft().Accept(this);
+    //min.getRight().Accept(this);
+    public Boolean visit(Reification reif) throws Exception {
+        reif.getCondition().Parents.add(reif);
+        return false;
+    }
+
+    @Override
+    public Boolean visit(final Negation r) throws Exception
+    {
+        r.getArg().Parents.add(r);
         return false;
     }
 
     //reif.Condition.Accept(this);
-    public boolean visit(Max max) throws Exception {
-        max.Left.Parents.Add(max);
-        max.Right.Parents.Add(max);
+    public Boolean visit(Max max) throws Exception {
+        max.getLeft().Parents.add(max);
+        max.getRight().Parents.add(max);
         return false;
     }
 
-    //max.Left.Accept(this);
-    //max.Right.Accept(this);
-    public boolean visit(And and) throws Exception {
-        and.Left.Parents.Add(and);
-        and.Right.Parents.Add(and);
+    //max.getLeft().Accept(this);
+    //max.getRight().Accept(this);
+    public Boolean visit(And and) throws Exception {
+        and.getLeft().Parents.add(and);
+        and.getRight().Parents.add(and);
         return false;
     }
 
-    //and.Left.Accept(this);
-    //and.Right.Accept(this);
-    public boolean visit(Or or) throws Exception {
-        or.Left.Parents.Add(or);
-        or.Right.Parents.Add(or);
+    //and.getLeft().Accept(this);
+    //and.getRight().Accept(this);
+    public Boolean visit(Or or) throws Exception {
+        or.getLeft().Parents.add(or);
+        or.getRight().Parents.add(or);
         return false;
     }
 
-    //or.Left.Accept(this);
-    //or.Right.Accept(this);
-    public boolean visit(ConstraintUtility cu) throws Exception {
-        cu.Constraint.Parents.Add(cu);
-        cu.Utility.Parents.Add(cu);
+    //or.getLeft().Accept(this);
+    //or.getRight().Accept(this);
+    public Boolean visit(ConstraintUtility cu) throws Exception {
+        cu.getConstraint().Parents.add(cu);
+        cu.getUtility().Parents.add(cu);
         return false;
     }
 
     //cu.Constraint.Accept(this);
     //cu.Utility.Accept(this);
-    public boolean visit(Sum sum) throws Exception {
-        for (Object __dummyForeachVar0 : sum.Terms)
+    public Boolean visit(Sum sum) throws Exception {
+        for (Term t : sum.getTerms())
         {
-            Term t = (Term)__dummyForeachVar0;
-            t.Parents.Add(sum);
+            t.Parents.add(sum);
         }
         return false;
     }
 
     //t.Accept(this);
-    public boolean visit(AutoDiff.Variable variable) throws Exception {
+    public Boolean visit(AutoDiff.Variable variable) throws Exception {
         return false;
     }
 
-    public boolean visit(Log log) throws Exception {
-        log.Arg.Parents.Add(log);
+    public Boolean visit(Log log) throws Exception {
+        log.getArg().Parents.add(log);
         return false;
     }
 
-    //log.Arg.Accept(this);
-    public boolean visit(Sin sin) throws Exception {
-        sin.Arg.Parents.Add(sin);
+    //log.getArg().Accept(this);
+    public Boolean visit(Sin sin) throws Exception {
+        sin.getArg().Parents.add(sin);
         return false;
     }
 
-    //sin.Arg.Accept(this);
-    public boolean visit(Cos cos) throws Exception {
-        cos.Arg.Parents.Add(cos);
+    //sin.getArg().Accept(this);
+    public Boolean visit(Cos cos) throws Exception {
+        cos.getArg().Parents.add(cos);
         return false;
     }
 
-    //cos.Arg.Accept(this);
-    public boolean visit(Abs abs) throws Exception {
-        abs.Arg.Parents.Add(abs);
+    //cos.getArg().Accept(this);
+    public Boolean visit(Abs abs) throws Exception {
+        abs.getArg().Parents.add(abs);
         return false;
     }
 
-    //abs.Arg.Accept(this);
-    public boolean visit(Exp exp) throws Exception {
-        exp.Arg.Parents.Add(exp);
+    //abs.getArg().Accept(this);
+    public Boolean visit(Exp exp) throws Exception {
+        exp.getArg().Parents.add(exp);
         return false;
     }
 
-    //exp.Arg.Accept(this);
-    public boolean visit(Atan2 atan2) throws Exception {
-        atan2.Left.Parents.Add(atan2);
-        atan2.Right.Parents.Add(atan2);
+    //exp.getArg().Accept(this);
+    public Boolean visit(Atan2 atan2) throws Exception {
+        atan2.getLeft().Parents.add(atan2);
+        atan2.getRight().Parents.add(atan2);
         return false;
     }
 
 }
 
 
-//atan2.Left.Accept(this);
-//atan2.Right.Accept(this);
+//atan2.getLeft().Accept(this);
+//atan2.getRight().Accept(this);

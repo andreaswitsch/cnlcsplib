@@ -931,7 +931,8 @@ namespace alica
 					{
 						if (constraints->at(i)->negativeTerm == nullptr)
 						{
-							constraints->at(i)->negativeTerm = TermUtils::compile(constraints->at(i)->term,
+							//TODO check this
+							constraints->at(i)->negativeTerm = TermUtils::compile(constraints->at(i)->term->negate(),
 																					this->currentArgs);
 						}
 						constraints->at(i)->curTerm = constraints->at(i)->negativeTerm;

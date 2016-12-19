@@ -50,6 +50,7 @@ public interface ITapeVisitor
 
     void visit(Reification elem) throws Exception ;
 
+    void visit(Negation elem) throws Exception ;
 }
 
 

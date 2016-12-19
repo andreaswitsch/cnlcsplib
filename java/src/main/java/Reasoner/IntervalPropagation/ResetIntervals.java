@@ -3,204 +3,205 @@
 //
 
 package Reasoner.IntervalPropagation;
-
+import AutoDiff.*;
 
 //using Alica.Reasoner;
 //using Al=Alica;
-public class ResetIntervals  extends ITermVisitor<boolean> 
+public class ResetIntervals implements ITermVisitor<Boolean>
 {
     public ResetIntervals() throws Exception {
     }
 
-    public boolean visit(Constant constant) throws Exception {
-        constant.Parents.Clear();
-        UpdateInterval(constant, constant.Value, constant.Value);
+    public Boolean visit(Constant constant) throws Exception {
+        constant.Parents.clear();
+        updateInterval(constant, constant.getValue(), constant.getValue());
         return true;
     }
 
-    public boolean visit(Zero zero) throws Exception {
-        zero.Parents.Clear();
-        UpdateInterval(zero, 0, 0);
+    public Boolean visit(Zero zero) throws Exception {
+        zero.Parents.clear();
+        updateInterval(zero, 0, 0);
         return true;
     }
 
-    public boolean visit(ConstPower intPower) throws Exception {
-        intPower.Parents.Clear();
-        intPower.Base.Accept(this);
-        if (intPower.Exponent == 0)
+    public Boolean visit(ConstPower intPower) throws Exception {
+        intPower.Parents.clear();
+        intPower.getBase().accept(this);
+        if (intPower.getExponent() == 0)
         {
-            UpdateInterval(intPower, 0, 0);
+            updateInterval(intPower, 0, 0);
             return true;
         }
          
-        double e = Math.Round(intPower.Exponent);
-        if (intPower.Exponent == e && ((int)e) % 2 == 0)
+        double e = Math.round(intPower.getExponent());
+        if (intPower.getExponent() == e && ((int)e) % 2 == 0)
         {
-            UpdateInterval(intPower, 0, Double.PositiveInfinity);
+            updateInterval(intPower, 0, Double.POSITIVE_INFINITY);
             return true;
         }
          
-        UpdateInterval(intPower, Double.NegativeInfinity, Double.PositiveInfinity);
+        updateInterval(intPower, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         return false;
     }
 
-    public boolean visit(TermPower tp) throws Exception {
-        tp.Parents.Clear();
-        tp.Base.Accept(this);
-        tp.Exponent.Accept(this);
-        UpdateInterval(tp, Double.NegativeInfinity, Double.PositiveInfinity);
+    public Boolean visit(TermPower tp) throws Exception {
+        tp.Parents.clear();
+        tp.getBase().accept(this);
+        tp.getExponent().accept(this);
+        updateInterval(tp, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         return false;
     }
 
-    public boolean visit(Gp gp) throws Exception {
-        throw new NotImplementedException();
+    public Boolean visit(Product product) throws Exception {
+        product.Parents.clear();
+        updateInterval(product, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        product.getLeft().accept(this);
+        product.getRight().accept(this);
         return false;
     }
 
-    public boolean visit(Product product) throws Exception {
-        product.Parents.Clear();
-        UpdateInterval(product, Double.NegativeInfinity, Double.PositiveInfinity);
-        product.Left.Accept(this);
-        product.Right.Accept(this);
-        return false;
-    }
-
-    public boolean visit(Sigmoid sigmoid) throws Exception {
-        sigmoid.Parents.Clear();
-        sigmoid.Arg.Accept(this);
-        sigmoid.Mid.Accept(this);
-        UpdateInterval(sigmoid, 0, 1);
+    public Boolean visit(Sigmoid sigmoid) throws Exception {
+        sigmoid.Parents.clear();
+        sigmoid.getArg().accept(this);
+        sigmoid.getMid().accept(this);
+        updateInterval(sigmoid, 0, 1);
         return true;
     }
 
-    public boolean visit(LinSigmoid sigmoid) throws Exception {
-        sigmoid.Parents.Clear();
-        sigmoid.Arg.Accept(this);
-        UpdateInterval(sigmoid, 0, 1);
+    public Boolean visit(LinSigmoid sigmoid) throws Exception {
+        sigmoid.Parents.clear();
+        sigmoid.getArg().accept(this);
+        updateInterval(sigmoid, 0, 1);
         return true;
     }
 
-    public boolean visit(LTConstraint constraint) throws Exception {
-        constraint.Parents.Clear();
-        constraint.Left.Accept(this);
-        constraint.Right.Accept(this);
-        UpdateInterval(constraint, Double.NegativeInfinity, 1);
+    public Boolean visit(LTConstraint constraint) throws Exception {
+        constraint.Parents.clear();
+        constraint.getLeft().accept(this);
+        constraint.getRight().accept(this);
+        updateInterval(constraint, Double.NEGATIVE_INFINITY, 1);
         return true;
     }
 
-    public boolean visit(LTEConstraint constraint) throws Exception {
-        constraint.Parents.Clear();
-        constraint.Left.Accept(this);
-        constraint.Right.Accept(this);
-        UpdateInterval(constraint, Double.NegativeInfinity, 1);
+    public Boolean visit(LTEConstraint constraint) throws Exception {
+        constraint.Parents.clear();
+        constraint.getLeft().accept(this);
+        constraint.getRight().accept(this);
+        updateInterval(constraint, Double.NEGATIVE_INFINITY, 1);
         return true;
     }
 
-    public boolean visit(Min min) throws Exception {
-        min.Parents.Clear();
-        min.Left.Accept(this);
-        min.Right.Accept(this);
-        UpdateInterval(min, Double.NegativeInfinity, Double.PositiveInfinity);
+    public Boolean visit(Min min) throws Exception {
+        min.Parents.clear();
+        min.getLeft().accept(this);
+        min.getRight().accept(this);
+        updateInterval(min, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         return true;
     }
 
-    public boolean visit(Reification reif) throws Exception {
-        reif.Parents.Clear();
-        reif.Condition.Accept(this);
-        UpdateInterval(reif, reif.MinVal, reif.MaxVal);
+    public Boolean visit(Reification reif) throws Exception {
+        reif.Parents.clear();
+        reif.getCondition().accept(this);
+        updateInterval(reif, reif.getMinVal(), reif.getMaxVal());
         return true;
     }
 
-    public boolean visit(Max max) throws Exception {
-        max.Parents.Clear();
-        max.Left.Accept(this);
-        max.Right.Accept(this);
-        UpdateInterval(max, Double.NegativeInfinity, Double.PositiveInfinity);
+    @Override
+    public Boolean visit(final Negation r) throws Exception
+    {
         return true;
     }
 
-    public boolean visit(And and) throws Exception {
-        and.Parents.Clear();
-        and.Left.Accept(this);
-        and.Right.Accept(this);
-        UpdateInterval(and, Double.NegativeInfinity, 1);
+    public Boolean visit(Max max) throws Exception {
+        max.Parents.clear();
+        max.getLeft().accept(this);
+        max.getRight().accept(this);
+        updateInterval(max, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         return true;
     }
 
-    //UpdateInterval(and,1,1); //enforce the purely conjunctive problem
-    public boolean visit(Or or) throws Exception {
-        or.Parents.Clear();
-        or.Left.Accept(this);
-        or.Right.Accept(this);
-        UpdateInterval(or, Double.NegativeInfinity, 1);
+    public Boolean visit(And and) throws Exception {
+        and.Parents.clear();
+        and.getLeft().accept(this);
+        and.getRight().accept(this);
+        updateInterval(and, Double.NEGATIVE_INFINITY, 1);
         return true;
     }
 
-    public boolean visit(ConstraintUtility cu) throws Exception {
-        cu.Parents.Clear();
-        cu.Constraint.Accept(this);
-        cu.Utility.Accept(this);
-        UpdateInterval(cu, 1, Double.PositiveInfinity);
+    //updateInterval(and,1,1); //enforce the purely conjunctive problem
+    public Boolean visit(Or or) throws Exception {
+        or.Parents.clear();
+        or.getLeft().accept(this);
+        or.getRight().accept(this);
+        updateInterval(or, Double.NEGATIVE_INFINITY, 1);
         return true;
     }
 
-    public boolean visit(Sum sum) throws Exception {
-        sum.Parents.Clear();
-        for (Object __dummyForeachVar0 : sum.Terms)
+    public Boolean visit(ConstraintUtility cu) throws Exception {
+        cu.Parents.clear();
+        cu.getConstraint().accept(this);
+        cu.getUtility().accept(this);
+        updateInterval(cu, 1, Double.POSITIVE_INFINITY);
+        return true;
+    }
+
+    public Boolean visit(Sum sum) throws Exception {
+        sum.Parents.clear();
+        for (Object __dummyForeachVar0 : sum.getTerms())
         {
             Term t = (Term)__dummyForeachVar0;
-            t.Accept(this);
+            t.accept(this);
         }
-        UpdateInterval(sum, Double.NegativeInfinity, Double.PositiveInfinity);
+        updateInterval(sum, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         return true;
     }
 
-    public boolean visit(AutoDiff.Variable variable) throws Exception {
-        variable.Parents.Clear();
-        UpdateInterval(variable, variable.GlobalMin, variable.GlobalMax);
+    public Boolean visit(AutoDiff.Variable variable) throws Exception {
+        variable.Parents.clear();
+        updateInterval(variable, variable.GlobalMin, variable.GlobalMax);
         return true;
     }
 
-    public boolean visit(Log log) throws Exception {
-        log.Parents.Clear();
-        log.Arg.Accept(this);
-        UpdateInterval(log, Double.NegativeInfinity, Double.PositiveInfinity);
+    public Boolean visit(Log log) throws Exception {
+        log.Parents.clear();
+        log.getArg().accept(this);
+        updateInterval(log, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         return true;
     }
 
-    public boolean visit(Sin sin) throws Exception {
-        sin.Parents.Clear();
-        sin.Arg.Accept(this);
-        UpdateInterval(sin, -1, 1);
+    public Boolean visit(Sin sin) throws Exception {
+        sin.Parents.clear();
+        sin.getArg().accept(this);
+        updateInterval(sin, -1, 1);
         return true;
     }
 
-    public boolean visit(Cos cos) throws Exception {
-        cos.Parents.Clear();
-        cos.Arg.Accept(this);
-        UpdateInterval(cos, -1, 1);
+    public Boolean visit(Cos cos) throws Exception {
+        cos.Parents.clear();
+        cos.getArg().accept(this);
+        updateInterval(cos, -1, 1);
         return true;
     }
 
-    public boolean visit(Abs abs) throws Exception {
-        abs.Parents.Clear();
-        abs.Arg.Accept(this);
-        UpdateInterval(abs, 0, Double.PositiveInfinity);
+    public Boolean visit(Abs abs) throws Exception {
+        abs.Parents.clear();
+        abs.getArg().accept(this);
+        updateInterval(abs, 0, Double.POSITIVE_INFINITY);
         return true;
     }
 
-    public boolean visit(Exp exp) throws Exception {
-        exp.Parents.Clear();
-        exp.Arg.Accept(this);
-        UpdateInterval(exp, 0, Double.PositiveInfinity);
+    public Boolean visit(Exp exp) throws Exception {
+        exp.Parents.clear();
+        exp.getArg().accept(this);
+        updateInterval(exp, 0, Double.POSITIVE_INFINITY);
         return true;
     }
 
-    public boolean visit(Atan2 atan2) throws Exception {
-        atan2.Parents.Clear();
-        atan2.Left.Accept(this);
-        atan2.Right.Accept(this);
-        UpdateInterval(atan2, -Math.PI, Math.PI);
+    public Boolean visit(Atan2 atan2) throws Exception {
+        atan2.Parents.clear();
+        atan2.getLeft().accept(this);
+        atan2.getRight().accept(this);
+        updateInterval(atan2, -Math.PI, Math.PI);
         return true;
     }
 

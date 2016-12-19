@@ -184,6 +184,8 @@ public interface ITermVisitor <TResult>
 
     TResult visit(Reification r) throws Exception ;
 
+    TResult visit(Negation r) throws Exception ;
+
 }
 
 

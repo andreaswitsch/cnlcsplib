@@ -10,9 +10,11 @@ import AutoDiff.LTConstraint;
 import AutoDiff.LTEConstraint;
 import AutoDiff.Max;
 import AutoDiff.Min;
+import AutoDiff.Negation;
 import AutoDiff.Or;
 import AutoDiff.Term;
 import AutoDiff.Variable;
+import com.sun.org.apache.xpath.internal.operations.Neg;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -235,7 +237,7 @@ public class FormulaTransform
         if (formula instanceof Variable) {
             lit.setIsTemporary(false);
             lit.computeVariableCount();
-            lit.setSign(Assignment.True);
+            if(lit.getSign()!=Assignment.False) lit.setSign(Assignment.True);
             this.setAtomOccurrence(this.getAtomOccurrence() + 1);
             Var v = this.getAtoms().get(lit.getAtom());
             if (v != null) {
@@ -246,6 +248,15 @@ public class FormulaTransform
                 this.getAtoms().put(lit.getAtom(), lit.getVar());
             }
             c.addChecked(lit);
+            newClause1.setValue(c);
+            newClause2.setValue(null);
+            return;
+        }
+
+        if (formula instanceof Negation && ((Negation)formula).getArg() instanceof Variable) {
+            Negation m = (Negation) formula;
+            Lit l = new Lit(m.getArg(), Assignment.False, true);
+            c.addChecked(l);
             newClause1.setValue(c);
             newClause2.setValue(null);
             return;

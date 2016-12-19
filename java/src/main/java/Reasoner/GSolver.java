@@ -11,41 +11,41 @@ public class GSolver
 {
 
 
-    private long __Runs;
+    private long runs;
     public long getRuns() {
-        return __Runs;
+        return runs;
     }
 
     public void setRuns(long value) {
-        __Runs = value;
+        runs = value;
     }
 
-    private long __FEvals;
+    private long fEvals;
     public long getFEvals() {
-        return __FEvals;
+        return fEvals;
     }
 
     public void setFEvals(long value) {
-        __FEvals = value;
+        fEvals = value;
     }
 
-    private long __MaxFEvals;
+    private long maxFEvals;
     public long getMaxFEvals() {
-        return __MaxFEvals;
+        return maxFEvals;
     }
 
     public void setMaxFEvals(long value) {
-        __MaxFEvals = value;
+        maxFEvals = value;
     }
 
     double initialStepSize = 0.005;
-    private double __RPropConvergenceStepSize;
+    private double rPropConvergenceStepSize;
     public double getRPropConvergenceStepSize() {
-        return __RPropConvergenceStepSize;
+        return rPropConvergenceStepSize;
     }
 
     public void setRPropConvergenceStepSize(double value) {
-        __RPropConvergenceStepSize = value;
+        rPropConvergenceStepSize = value;
     }
 
     public double utilitySignificanceThreshold = 1E-22;
