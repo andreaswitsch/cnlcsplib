@@ -27,49 +27,49 @@ public class LTEConstraint  extends Term
         this.setNegatedForm(negatedForm);
     }
 
-    private Term __NegatedForm;
+    private Term NegatedForm;
     public Term getNegatedForm() {
-        return __NegatedForm;
+        return NegatedForm;
     }
 
     public void setNegatedForm(Term value) {
-        __NegatedForm = value;
+        NegatedForm = value;
     }
 
     /**
     * Gets the smaller argument of the constraint.
     */
-    private Term __Left;
+    private Term Left;
     public Term getLeft() {
-        return __Left;
+        return Left;
     }
 
     public void setLeft(Term value) {
-        __Left = value;
+        Left = value;
     }
 
     /**
     * Gets the larger argument of the constraint.
     */
-    private Term __Right;
+    private Term Right;
     public Term getRight() {
-        return __Right;
+        return Right;
     }
 
     public void setRight(Term value) {
-        __Right = value;
+        Right = value;
     }
 
     /**
     * Gets the sigmoid's steepness.
     */
-    private double __Steepness;
+    private double Steepness;
     public double getSteepness() {
-        return __Steepness;
+        return Steepness;
     }
 
     public void setSteepness(double value) {
-        __Steepness = value;
+        Steepness = value;
     }
 //
 //    /**
@@ -106,13 +106,13 @@ public class LTEConstraint  extends Term
         {
             return String.format("%s <= %s", getLeft(), getRight());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

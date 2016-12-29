@@ -36,13 +36,13 @@ public class Zero  extends Term
         {
             return "0";
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }
@@ -63,13 +63,13 @@ public class Zero  extends Term
              
             return false;
         }
-        catch (RuntimeException __dummyCatchVar1)
+        catch (RuntimeException dummyCatchVar1)
         {
-            throw __dummyCatchVar1;
+            throw dummyCatchVar1;
         }
-        catch (Exception __dummyCatchVar1)
+        catch (Exception dummyCatchVar1)
         {
-            throw new RuntimeException(__dummyCatchVar1);
+            throw new RuntimeException(dummyCatchVar1);
         }
     
     }

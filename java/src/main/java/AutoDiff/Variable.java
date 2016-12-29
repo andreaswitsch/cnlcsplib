@@ -49,13 +49,13 @@ public class Variable  extends Term
             int hash = ownID;
             return (hash < 0 ? String.format("%s_%d",name, -hash) : String.format("%s%d", name, hash));
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

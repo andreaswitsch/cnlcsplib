@@ -33,37 +33,37 @@ public class Sigmoid  extends Term
     /**
     * Gets the Argument of the sigmoid.
     */
-    private Term __Arg;
+    private Term Arg;
     public Term getArg() {
-        return __Arg;
+        return Arg;
     }
 
     public void setArg(Term value) {
-        __Arg = value;
+        Arg = value;
     }
 
     /**
     * Gets the Midpoint of the sigmoid.
     */
-    private Term __Mid;
+    private Term Mid;
     public Term getMid() {
-        return __Mid;
+        return Mid;
     }
 
     public void setMid(Term value) {
-        __Mid = value;
+        Mid = value;
     }
 
     /**
     * Gets the sigmoid's steepness.
     */
-    private double __Steepness;
+    private double Steepness;
     public double getSteepness() {
-        return __Steepness;
+        return Steepness;
     }
 
     public void setSteepness(double value) {
-        __Steepness = value;
+        Steepness = value;
     }
 
 //    /**
@@ -91,13 +91,13 @@ public class Sigmoid  extends Term
         {
             return String.format("sigmoid( %s, %s, %f )", getArg(), getMid(), getSteepness());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

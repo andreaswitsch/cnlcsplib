@@ -40,13 +40,13 @@ public class Sum  extends Term
     /**
     * Gets the terms of this sum.
     */
-    private Term[] __Terms;
+    private Term[] Terms;
     public Term[] getTerms() {
-        return __Terms;
+        return Terms;
     }
 
     public void setTerms(Term[] value) {
-        __Terms = value;
+        Terms = value;
     }
 
 //    /**
@@ -79,13 +79,13 @@ public class Sum  extends Term
             }
             return ret += " )";
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

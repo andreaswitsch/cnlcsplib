@@ -185,7 +185,7 @@ public class IntervalPropagator
         {
             this.rp.propagate(term);
         }
-        catch (UnsolveableException __dummyCatchVar0)
+        catch (UnsolveableException exception)
         {
             return false;
         }

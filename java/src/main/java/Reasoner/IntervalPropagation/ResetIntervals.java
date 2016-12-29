@@ -147,9 +147,8 @@ public class ResetIntervals implements ITermVisitor<Boolean>
 
     public Boolean visit(Sum sum) throws Exception {
         sum.Parents.clear();
-        for (Object __dummyForeachVar0 : sum.getTerms())
+        for (Term t : sum.getTerms())
         {
-            Term t = (Term)__dummyForeachVar0;
             t.accept(this);
         }
         updateInterval(sum, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);

@@ -72,7 +72,7 @@ public class TVec
     *  @param index The vector's component index.
     *  @return The vector component.
     */
-    public Term get___idx(int index) throws Exception {
+    public Term get_idx(int index) throws Exception {
         return terms[index];
     }
 
@@ -114,7 +114,7 @@ public class TVec
     * Gets the first vector component
     */
     public Term getX() throws Exception {
-        return this.get___idx(0);
+        return this.get_idx(0);
     }
 
     //Contract.Ensures(Contract.Result<Term>() != null);
@@ -122,7 +122,7 @@ public class TVec
     * Gets the second vector component.
     */
     public Term getY() throws Exception {
-        return this.get___idx(1);
+        return this.get_idx(1);
     }
 
     //Contract.Requires(Dimension >= 2);
@@ -131,7 +131,7 @@ public class TVec
     * Gets the third vector component
     */
     public Term getZ() throws Exception {
-        return this.get___idx(2);
+        return this.get_idx(2);
     }
 
     //Contract.Requires(Dimension >= 3);
@@ -307,13 +307,13 @@ public class TVec
              
             return String.format("TVec: Dimension=%d, [%s]", getDimension(), termString);
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

@@ -367,9 +367,9 @@ public class DownwardPropagator implements ITermVisitor<Boolean>
                     minother += sum.getTerms()[j].Min;
                     maxother += sum.getTerms()[j].Max;
                 }
-                /*Console.WriteLine("-______S({0} {1})",sum.Min,sum.Max);
-                					Console.WriteLine("-______O({0} {1})",maxother,minother);
-                					Console.WriteLine("-______>DW {0} to {1} {2} I am {3}",t,sum.Min-maxother,sum.Max-minother,sum);
+                /*Console.WriteLine("-S({0} {1})",sum.Min,sum.Max);
+                					Console.WriteLine("-O({0} {1})",maxother,minother);
+                					Console.WriteLine("->DW {0} to {1} {2} I am {3}",t,sum.Min-maxother,sum.Max-minother,sum);
                 					*/
                 if (updateInterval(sum.getTerms()[i], sum.Min - maxother, sum.Max - minother))
                 {

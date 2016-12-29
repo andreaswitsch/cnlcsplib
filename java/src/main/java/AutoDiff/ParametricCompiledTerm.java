@@ -28,22 +28,22 @@ public class ParametricCompiledTerm   implements IParametricCompiledTerm
         return Tuple.create(partialGradient, diffResult.getItem2());
     }
 
-    private Variable[] __Variables = new Variable[0];
+    private Variable[] Variables = new Variable[0];
     public Variable[] getVariables() {
-        return __Variables;
+        return Variables;
     }
 
     public void setVariables(Variable[] value) {
-        __Variables = value;
+        Variables = value;
     }
 
-    private Variable[] __Parameters = new Variable[0];
+    private Variable[] Parameters = new Variable[0];
     public Variable[] getParameters() {
-        return __Parameters;
+        return Parameters;
     }
 
     public void setParameters(Variable[] value) {
-        __Parameters = value;
+        Parameters = value;
     }
 
 }

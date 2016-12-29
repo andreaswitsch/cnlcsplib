@@ -14,25 +14,25 @@ public class TermPower  extends Term
     /**
     * Gets the base term of the power function
     */
-    private Term __Base;
+    private Term Base;
     public Term getBase() {
-        return __Base;
+        return Base;
     }
 
     public void setBase(Term value) {
-        __Base = value;
+        Base = value;
     }
 
     /**
     * Gets the exponent term of the power function.
     */
-    private Term __Exponent;
+    private Term Exponent;
     public Term getExponent() {
-        return __Exponent;
+        return Exponent;
     }
 
     public void setExponent(Term value) {
-        __Exponent = value;
+        Exponent = value;
     }
 
 //    /**
@@ -60,13 +60,13 @@ public class TermPower  extends Term
         {
             return String.format("termPower( %s, %s )", getBase(), getExponent());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

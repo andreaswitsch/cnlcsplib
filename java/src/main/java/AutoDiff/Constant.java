@@ -24,13 +24,13 @@ public class Constant extends Term
     /**
     * Gets the value of this constant
     */
-    private double __Value;
+    private double Value;
     public double getValue() {
-        return __Value;
+        return Value;
     }
 
     public void setValue(double value) {
-        __Value = value;
+        Value = value;
     }
 
 //    /**
@@ -64,13 +64,13 @@ public class Constant extends Term
              
             return String.format("%f", getValue());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

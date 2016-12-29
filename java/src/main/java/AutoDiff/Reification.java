@@ -21,13 +21,13 @@ public class Reification  extends Term
     * 
     * The constraint.
     */
-    private Term __Condition;
+    private Term Condition;
     public Term getCondition() {
-        return __Condition;
+        return Condition;
     }
 
     public void setCondition(Term value) {
-        __Condition = value;
+        Condition = value;
     }
 
     /**
@@ -35,13 +35,13 @@ public class Reification  extends Term
     * 
     * The negated constraint.
     */
-    private Term __NegatedCondition;
+    private Term NegatedCondition;
     public Term getNegatedCondition() {
-        return __NegatedCondition;
+        return NegatedCondition;
     }
 
     public void setNegatedCondition(Term value) {
-        __NegatedCondition = value;
+        NegatedCondition = value;
     }
 
     /**
@@ -49,13 +49,13 @@ public class Reification  extends Term
     * 
     * The value representing a violated constraint.
     */
-    private double __MinVal;
+    private double MinVal;
     public double getMinVal() {
-        return __MinVal;
+        return MinVal;
     }
 
     public void setMinVal(double value) {
-        __MinVal = value;
+        MinVal = value;
     }
 
     /**
@@ -63,13 +63,13 @@ public class Reification  extends Term
     * 
     * The value representing a satisfied constraint.
     */
-    private double __MaxVal;
+    private double MaxVal;
     public double getMaxVal() {
-        return __MaxVal;
+        return MaxVal;
     }
 
     public void setMaxVal(double value) {
-        __MaxVal = value;
+        MaxVal = value;
     }
 //
 //    /**
@@ -97,13 +97,13 @@ public class Reification  extends Term
         {
             return String.format("Discretizer( %s, %f, %f )", getCondition(), Min, Max);
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

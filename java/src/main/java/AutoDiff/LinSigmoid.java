@@ -25,13 +25,13 @@ public class LinSigmoid  extends Term
     /**
     * Gets the Argument of the sigmoid.
     */
-    private Term __Arg;
+    private Term Arg;
     public Term getArg() {
-        return __Arg;
+        return Arg;
     }
 
     public void setArg(Term value) {
-        __Arg = value;
+        Arg = value;
     }
 
 //    /**
@@ -59,13 +59,13 @@ public class LinSigmoid  extends Term
         {
             return String.format("sigmoid( %s)", getArg());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

@@ -38,31 +38,31 @@ public class Lit implements ITermVisitor
         return sign + getVar().getTerm().toString();
     }
 
-    private Assignment __Sign = Assignment.False;
+    private Assignment Sign = Assignment.False;
     public void setSign(Assignment value) {
-        __Sign = value;
+        Sign = value;
     }
 
     public Assignment getSign() {
-        return __Sign;
+        return Sign;
     }
 
-    private Var __Var;
+    private Var Var;
     public Var getVar() {
-        return __Var;
+        return Var;
     }
 
     public void setVar(Var value) {
-        __Var = value;
+        Var = value;
     }
 
-    private int __VariableCount;
+    private int VariableCount;
     public int getVariableCount() {
-        return __VariableCount;
+        return VariableCount;
     }
 
     public void setVariableCount(int value) {
-        __VariableCount = value;
+        VariableCount = value;
     }
 
     public void computeVariableCount() throws Exception {
@@ -70,13 +70,13 @@ public class Lit implements ITermVisitor
         getAtom().accept(this);
     }
 
-    private boolean __IsTemporary;
+    private boolean IsTemporary;
     public boolean getIsTemporary() {
-        return __IsTemporary;
+        return IsTemporary;
     }
 
     public void setIsTemporary(boolean value) {
-        __IsTemporary = value;
+        IsTemporary = value;
     }
 
     public Lit(Term t, Assignment ass, boolean temp) throws Exception {
@@ -86,13 +86,13 @@ public class Lit implements ITermVisitor
         setVariableCount(-1);
     }
 
-    private Term __Atom;
+    private Term Atom;
     public Term getAtom() {
-        return __Atom;
+        return Atom;
     }
 
     public void setAtom(Term value) {
-        __Atom = value;
+        Atom = value;
     }
 
     public Object visit(Constant constant) throws Exception {
@@ -174,9 +174,8 @@ public class Lit implements ITermVisitor
     }
 
     public Object visit(Sum sum) throws Exception {
-        for (Object __dummyForeachVar0 : sum.getTerms())
+        for (Term t : sum.getTerms())
         {
-            Term t = (Term)__dummyForeachVar0;
             t.accept(this);
         }
         return null;

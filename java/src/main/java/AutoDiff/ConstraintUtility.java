@@ -25,25 +25,25 @@ public class ConstraintUtility  extends Term
     /**
     * Gets the constraint.
     */
-    private Term __Constraint;
+    private Term Constraint;
     public Term getConstraint() {
-        return __Constraint;
+        return Constraint;
     }
 
     public void setConstraint(Term value) {
-        __Constraint = value;
+        Constraint = value;
     }
 
     /**
     * Gets the utility.
     */
-    private Term __Utility;
+    private Term Utility;
     public Term getUtility() {
-        return __Utility;
+        return Utility;
     }
 
     public void setUtility(Term value) {
-        __Utility = value;
+        Utility = value;
     }
 
 //    /**
@@ -86,13 +86,13 @@ public class ConstraintUtility  extends Term
         {
             return String.format("[ConstraintUtility: Constraint=%s, Utility=%s]", getConstraint(), getUtility());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

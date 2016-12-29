@@ -24,13 +24,13 @@ public class Exp  extends Term
     /**
     * Gets the exponent term.
     */
-    private Term __Arg;
+    private Term Arg;
     public Term getArg() {
-        return __Arg;
+        return Arg;
     }
 
     public void setArg(Term value) {
-        __Arg = value;
+        Arg = value;
     }
 
 //    /**
@@ -58,13 +58,13 @@ public class Exp  extends Term
         {
             return String.format("exp( %s )", getArg());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

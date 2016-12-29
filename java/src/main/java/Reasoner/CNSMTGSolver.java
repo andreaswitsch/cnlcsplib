@@ -41,13 +41,13 @@ public class CNSMTGSolver
     double[] ranges;
     double[] rpropStepWidth;
     double[] rpropStepConvergenceThreshold;
-    private double __RPropConvergenceStepSize;
+    private double RPropConvergenceStepSize;
     public double getRPropConvergenceStepSize() {
-        return __RPropConvergenceStepSize;
+        return RPropConvergenceStepSize;
     }
 
     public void setRPropConvergenceStepSize(double value) {
-        __RPropConvergenceStepSize = value;
+        RPropConvergenceStepSize = value;
     }
 
     AutoDiff.Variable[] currentArgs;

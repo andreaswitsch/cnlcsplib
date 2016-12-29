@@ -25,25 +25,25 @@ public class Atan2  extends Term
     /**
     * Gets the first atan2 term.
     */
-    private Term __Left;
+    private Term Left;
     public Term getLeft() {
-        return __Left;
+        return Left;
     }
 
     public void setLeft(Term value) {
-        __Left = value;
+        Left = value;
     }
 
     /**
     * Gets the second atan2 term.
     */
-    private Term __Right;
+    private Term Right;
     public Term getRight() {
-        return __Right;
+        return Right;
     }
 
     public void setRight(Term value) {
-        __Right = value;
+        Right = value;
     }
 
 //    /**
@@ -71,13 +71,13 @@ public class Atan2  extends Term
         {
             return String.format("atan2( %s, %s )", getLeft(), getRight());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

@@ -25,25 +25,25 @@ public class ConstPower  extends Term
     /**
     * Gets the base term of the power function
     */
-    private Term __Base;
+    private Term Base;
     public Term getBase() {
-        return __Base;
+        return Base;
     }
 
     public void setBase(Term value) {
-        __Base = value;
+        Base = value;
     }
 
     /**
     * Gets the exponent term of the power function.
     */
-    private double __Exponent;
+    private double Exponent;
     public double getExponent() {
-        return __Exponent;
+        return Exponent;
     }
 
     public void setExponent(double value) {
-        __Exponent = value;
+        Exponent = value;
     }
 
 //    /**
@@ -71,13 +71,13 @@ public class ConstPower  extends Term
         {
             return String.format("constPower( %s, %f )", getBase(), getExponent());
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }

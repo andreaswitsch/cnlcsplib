@@ -38,13 +38,13 @@ public class CompiledDifferentiator implements ICompiledTerm
         setVariables(variables);
     }
 
-    private int __Dimension;
+    private int Dimension;
     public int getDimension() {
-        return __Dimension;
+        return Dimension;
     }
 
     public void setDimension(int value) {
-        __Dimension = value;
+        Dimension = value;
     }
 
     public double evaluate(double[] arg) throws Exception {
@@ -112,13 +112,13 @@ public class CompiledDifferentiator implements ICompiledTerm
         return tape[index].Value;
     }
 
-    private Variable[] __Variables = new Variable[0];
+    private Variable[] Variables = new Variable[0];
     public Variable[] getVariables() {
-        return __Variables;
+        return Variables;
     }
 
     public void setVariables(Variable[] value) {
-        __Variables = value;
+        Variables = value;
     }
 
 }

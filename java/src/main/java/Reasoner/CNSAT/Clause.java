@@ -56,22 +56,22 @@ public class Clause implements Comparable<Clause>
         return;
     }
 
-    private boolean __IsTautologic;
+    private boolean IsTautologic;
     public boolean getIsTautologic() {
-        return __IsTautologic;
+        return IsTautologic;
     }
 
     public void setIsTautologic(boolean value) {
-        __IsTautologic = value;
+        IsTautologic = value;
     }
 
-    private boolean __IsFinished;
+    private boolean IsFinished;
     public boolean getIsFinished() {
-        return __IsFinished;
+        return IsFinished;
     }
 
     public void setIsFinished(boolean value) {
-        __IsFinished = value;
+        IsFinished = value;
     }
 
     public Clause clone() {
@@ -83,13 +83,13 @@ public class Clause implements Comparable<Clause>
             clone.setIsTautologic(this.getIsTautologic());
             return clone;
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     
     }
@@ -107,9 +107,8 @@ public class Clause implements Comparable<Clause>
 
     public int avgActivity() throws Exception {
         int ret = 0;
-        for (Object __dummyForeachVar0 : literals)
+        for (Lit l : literals)
         {
-            Lit l = (Lit)__dummyForeachVar0;
             ret += l.getVar().getActivity();
         }
         return ret / literals.size();
@@ -127,9 +126,8 @@ public class Clause implements Comparable<Clause>
     }
 
     public boolean checkSatisfied() throws Exception {
-        for (Object __dummyForeachVar1 : literals)
+        for (Lit l : literals)
         {
-            Lit l = (Lit)__dummyForeachVar1;
             if (l.getVar().getAssignment() == l.getSign())
             {
                 return true;
@@ -148,38 +146,37 @@ public class Clause implements Comparable<Clause>
         literals = value;
     }
 
-    private boolean __Satisfied;
+    private boolean Satisfied;
     public void setSatisfied(boolean value) {
-        __Satisfied = value;
+        Satisfied = value;
     }
 
     public boolean getSatisfied() {
-        return __Satisfied;
+        return Satisfied;
     }
 
     public Watcher[] watcher = new Watcher[2];
-    private Var __LastModVar;
+    private Var LastModVar;
     public void setLastModVar(Var value) {
-        __LastModVar = value;
+        LastModVar = value;
     }
 
     public Var getLastModVar() {
-        return __LastModVar;
+        return LastModVar;
     }
 
-    private int __Activity;
+    private int Activity;
     public void setActivity(int value) {
-        __Activity = value;
+        Activity = value;
     }
 
     public int getActivity() {
-        return __Activity;
+        return Activity;
     }
 
     public void print() throws Exception {
-        for (Object __dummyForeachVar2 : getLiterals())
+        for (Lit l : getLiterals())
         {
-            Lit l = (Lit)__dummyForeachVar2;
             if (l.getSign() == Assignment.False)
                 System.out.print("-");
              

@@ -34,67 +34,67 @@ public class Var
     }
 
     private Clause reason;
-    private int __Index;
+    private int Index;
     public void setIndex(int value) {
-        __Index = value;
+        Index = value;
     }
 
     public int getIndex() {
-        return __Index;
+        return Index;
     }
 
-    private int __Activity;
+    private int Activity;
     public void setActivity(int value) {
-        __Activity = value;
+        Activity = value;
     }
 
     public int getActivity() {
-        return __Activity;
+        return Activity;
     }
 
-    private int __NegActivity;
+    private int NegActivity;
     public void setNegActivity(int value) {
-        __NegActivity = value;
+        NegActivity = value;
     }
 
     public int getNegActivity() {
-        return __NegActivity;
+        return NegActivity;
     }
 
-    private boolean __Locked;
+    private boolean Locked;
     public void setLocked(boolean value) {
-        __Locked = value;
+        Locked = value;
     }
 
     public boolean getLocked() {
-        return __Locked;
+        return Locked;
     }
 
-    private Assignment __Assignment;
+    private Assignment Assignment;
     public void setAssignment(Assignment value) {
-        __Assignment = value;
+        Assignment = value;
     }
 
     public Assignment getAssignment() {
-        return __Assignment;
+        return Assignment;
     }
 
-    private boolean __Seen;
+    private boolean Seen;
     public void setSeen(boolean value) {
-        __Seen = value;
+        Seen = value;
     }
 
     public boolean getSeen() {
-        return __Seen;
+        return Seen;
     }
 
-    private boolean __PreferedSign;
+    private boolean PreferedSign;
     public boolean getPreferedSign() {
-        return __PreferedSign;
+        return PreferedSign;
     }
 
     public void setPreferedSign(boolean value) {
-        __PreferedSign = value;
+        PreferedSign = value;
     }
 
     public Clause getReason() throws Exception {
@@ -104,9 +104,8 @@ public class Var
     public void setReason(Clause value) throws Exception {
         if (value != null && value != this.reason)
         {
-            for (Object __dummyForeachVar0 : value.getLiterals())
+            for (Lit l : value.getLiterals())
             {
-                Lit l = (Lit)__dummyForeachVar0;
                 if (l.getVar().getAssignment() == getAssignment().Unassigned)
                 {
                     System.out.println(this + "   " + l.getVar());
@@ -130,103 +129,103 @@ public class Var
         setActivity(0);
     }
 
-    private DecisionLevel __DecisionLevel;
+    private DecisionLevel DecisionLevel;
     public DecisionLevel getDecisionLevel() {
-        return __DecisionLevel;
+        return DecisionLevel;
     }
 
     public void setDecisionLevel(DecisionLevel value) {
-        __DecisionLevel = value;
+        DecisionLevel = value;
     }
 
-    private int __PositiveAppearance;
+    private int PositiveAppearance;
     public int getPositiveAppearance() {
-        return __PositiveAppearance;
+        return PositiveAppearance;
     }
 
     public void setPositiveAppearance(int value) {
-        __PositiveAppearance = value;
+        PositiveAppearance = value;
     }
 
-    private int __NegativeAppearance;
+    private int NegativeAppearance;
     public int getNegativeAppearance() {
-        return __NegativeAppearance;
+        return NegativeAppearance;
     }
 
     public void setNegativeAppearance(int value) {
-        __NegativeAppearance = value;
+        NegativeAppearance = value;
     }
 
-    private Term __Term;
+    private Term Term;
     public Term getTerm() {
-        return __Term;
+        return Term;
     }
 
     public void setTerm(Term value) {
-        __Term = value;
+        Term = value;
     }
 
-    private Double[][] __PositiveRanges;
+    private Double[][] PositiveRanges;
     public Double[][] getPositiveRanges() {
-        return __PositiveRanges;
+        return PositiveRanges;
     }
 
     public void setPositiveRanges(Double[][] value) {
-        __PositiveRanges = value;
+        PositiveRanges = value;
     }
 
-    private Double[][] __NegativeRanges;
+    private Double[][] NegativeRanges;
     public Double[][] getNegativeRanges() {
-        return __NegativeRanges;
+        return NegativeRanges;
     }
 
     public void setNegativeRanges(Double[][] value) {
-        __NegativeRanges = value;
+        NegativeRanges = value;
     }
 
-    private double __PositiveRangeSize;
+    private double PositiveRangeSize;
     public double getPositiveRangeSize() {
-        return __PositiveRangeSize;
+        return PositiveRangeSize;
     }
 
     public void setPositiveRangeSize(double value) {
-        __PositiveRangeSize = value;
+        PositiveRangeSize = value;
     }
 
-    private double __NegativeRangeSize;
+    private double NegativeRangeSize;
     public double getNegativeRangeSize() {
-        return __NegativeRangeSize;
+        return NegativeRangeSize;
     }
 
     public void setNegativeRangeSize(double value) {
-        __NegativeRangeSize = value;
+        NegativeRangeSize = value;
     }
 
-    private ICompiledTerm __PositiveTerm;
+    private ICompiledTerm PositiveTerm;
     public ICompiledTerm getPositiveTerm() {
-        return __PositiveTerm;
+        return PositiveTerm;
     }
 
     public void setPositiveTerm(ICompiledTerm value) {
-        __PositiveTerm = value;
+        PositiveTerm = value;
     }
 
-    private ICompiledTerm __NegativeTerm;
+    private ICompiledTerm NegativeTerm;
     public ICompiledTerm getNegativeTerm() {
-        return __NegativeTerm;
+        return NegativeTerm;
     }
 
     public void setNegativeTerm(ICompiledTerm value) {
-        __NegativeTerm = value;
+        NegativeTerm = value;
     }
 
-    private ICompiledTerm __CurTerm;
+    private ICompiledTerm CurTerm;
     public ICompiledTerm getCurTerm() {
-        return __CurTerm;
+        return CurTerm;
     }
 
     public void setCurTerm(ICompiledTerm value) {
-        __CurTerm = value;
+        CurTerm = value;
     }
 
     public void print() throws Exception {
@@ -244,13 +243,13 @@ public class Var
         {
             return (getAssignment() == getAssignment().False ? "-" : (getAssignment() == getAssignment().True ? "+" : "o")) + this.getIndex();
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     }
 
@@ -260,13 +259,13 @@ public class Var
             return (getAssignment() == getAssignment().False ? "-" : (getAssignment() == getAssignment().True ? "+" :
                 "o")) + this.getTerm().toString();
         }
-        catch (RuntimeException __dummyCatchVar0)
+        catch (RuntimeException exception)
         {
-            throw __dummyCatchVar0;
+            throw exception;
         }
-        catch (Exception __dummyCatchVar0)
+        catch (Exception exception)
         {
-            throw new RuntimeException(__dummyCatchVar0);
+            throw new RuntimeException(exception);
         }
     }
 

@@ -98,16 +98,16 @@ public class CNSat
     decisionLevel = value;
   }
 
-  private boolean __UseIntervalProp;
+  private boolean UseIntervalProp;
 
   public boolean getUseIntervalProp()
   {
-    return __UseIntervalProp;
+    return UseIntervalProp;
   }
 
   public void setUseIntervalProp(boolean value)
   {
-    __UseIntervalProp = value;
+    UseIntervalProp = value;
   }
 
   public Random getRand() throws Exception
@@ -586,8 +586,7 @@ public class CNSat
         }
 
         boolean found = false;
-        for (Object __dummyForeachVar8 : c.getLiterals()) {
-          Lit l = (Lit) __dummyForeachVar8;
+        for (Lit l : c.getLiterals()) {
           if (c.watcher[oWId].getLit().getVar() != l.getVar() && (l.getVar().getAssignment() == Assignment.Unassigned || l
               .satisfied())) {
             w.getLit().getVar().getWatchList().remove(w);

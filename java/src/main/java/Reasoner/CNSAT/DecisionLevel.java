@@ -7,13 +7,13 @@ package Reasoner.CNSAT;
 
 public class DecisionLevel   
 {
-    private int __Level;
+    private int Level;
     public int getLevel() {
-        return __Level;
+        return Level;
     }
 
     public void setLevel(int value) {
-        __Level = value;
+        Level = value;
     }
 
     //public double[] Seed {get; set;}

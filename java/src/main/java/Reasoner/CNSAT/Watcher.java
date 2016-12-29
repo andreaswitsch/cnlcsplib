@@ -6,22 +6,22 @@ package Reasoner.CNSAT;
 
 public class Watcher
 {
-    private Clause __Clause;
+    private Clause Clause;
     public Clause getClause() {
-        return __Clause;
+        return Clause;
     }
 
     public void setClause(Clause value) {
-        __Clause = value;
+        Clause = value;
     }
 
-    private Lit __Lit;
+    private Lit Lit;
     public Lit getLit() {
-        return __Lit;
+        return Lit;
     }
 
     public void setLit(Lit value) {
-        __Lit = value;
+        Lit = value;
     }
 
     public Watcher(Lit l, Clause parent) throws Exception {

@@ -25,28 +25,28 @@ import org.apache.commons.lang3.mutable.MutableObject;
 
 public class FormulaTransform
 {
-    private HashMap<Term, Var> __Atoms = new HashMap<Term, Var>();
+    private HashMap<Term, Var> Atoms = new HashMap<Term, Var>();
 
     public HashMap<Term, Var> getAtoms()
     {
-        return __Atoms;
+        return Atoms;
     }
 
     public void setAtoms(HashMap<Term, Var> value)
     {
-        __Atoms = value;
+        Atoms = value;
     }
 
-    private int __AtomOccurrence;
+    private int AtomOccurrence;
 
     public int getAtomOccurrence()
     {
-        return __AtomOccurrence;
+        return AtomOccurrence;
     }
 
     public void setAtomOccurrence(int value)
     {
-        __AtomOccurrence = value;
+        AtomOccurrence = value;
     }
 
     public FormulaTransform() throws Exception
