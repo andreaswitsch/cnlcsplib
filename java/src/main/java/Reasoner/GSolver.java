@@ -7,7 +7,7 @@ import java.util.Random;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.mutable.MutableDouble;
 
-public class GSolver
+public class GSolver implements ISolver
 {
 
 

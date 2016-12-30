@@ -23,7 +23,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.mutable.MutableDouble;
 import org.apache.commons.lang3.mutable.MutableObject;
 
-public class CNSMTGSolver
+public class CNSMTGSolver implements ISolver
 {
     public int getRuns() throws Exception {
         return this.runCount;
@@ -118,11 +118,11 @@ public class CNSMTGSolver
 
     public Double[] solve(Term equation, Variable[] args, Double[][] limits, MutableDouble util) throws
         Exception {
-        return solve(equation, args, limits, null, util);
+        return solve(equation, args, limits, null, Double.MAX_VALUE, util);
 
     }
 
-    public Double[] solve(Term equation, Variable[] args, Double[][] limits, Double[][] seeds, MutableDouble util)
+    public Double[] solve(Term equation, Variable[] args, Double[][] limits, Double[][] seeds, double sufficientUtility, MutableDouble util)
         throws Exception {
         lastSeed = null;
         probeCount = 0;
