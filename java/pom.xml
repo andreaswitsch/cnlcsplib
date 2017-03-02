@@ -9,6 +9,11 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
+  <properties>
+    <antlr4.plugin.version>4.5</antlr4.plugin.version>
+    <antlr4.version>4.5</antlr4.version>
+  </properties>
+
 
   <dependencies>
     <dependency>
@@ -16,6 +21,20 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.3.2</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4-runtime</artifactId>
+      <version>${antlr4.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4-maven-plugin</artifactId>
+      <version>${antlr4.plugin.version}</version>
+    </dependency>
+
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -33,10 +52,26 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
-          <excludes>
-            <!--<exclude>**/Reasoner/IntervalPropagation/*</exclude>-->
-          </excludes>
         </configuration>
+      </plugin>
+
+
+      <plugin>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-maven-plugin</artifactId>
+        <version>${antlr4.plugin.version}</version>
+        <configuration>
+          <arguments>
+            <argument>-visitor</argument>
+          </arguments>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>antlr4</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
